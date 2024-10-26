@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clearcom Beltpack Config Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>XML Generator</h1>
+
+    <label for="fileName">Enter Your name:</label>
+    <input type="text" id="fileName" placeholder="Enter file name">
+
+    <div id="dropdowns">
+        <h2>Select Partyline Values</h2>
+
+        <!-- Dropdowns 4-7 arranged in a line above -->
+        <div id="dropdownLine">
+            <select id="target4"></select>
+            <select id="target5"></select>
+            <select id="target6"></select>
+            <select id="target7"></select>
+        </div>
+
+        <!-- Dropdowns 0-3 arranged in a square below -->
+        <div id="dropdownSquare">
+            <select id="target0"></select>
+            <select id="target1"></select>
+            <select id="target2"></select>
+            <select id="target3"></select>
+        </div>
+
+        <button onclick="generateXML()">Generate beltpack Config</button>
+        <a id="downloadLink" style="display:none;"></a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

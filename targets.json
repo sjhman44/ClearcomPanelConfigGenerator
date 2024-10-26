@@ -1,0 +1,17 @@
+{
+    "targets": [
+        { "value": "GRP.1.01", "label": "Car6" },
+        { "value": "GRP.1.02", "label": "Car7" },
+        { "value": "GRP.1.03", "label": "Garage6" },
+        { "value": "GRP.1.04", "label": "Garage7" },
+        { "value": "GRP.1.05", "label": "Pitwall6" },
+        { "value": "GRP.1.06", "label": "Pitwall7" },
+        { "value": "GRP.1.07", "label": "Pitwall All" },
+        { "value": "GRP.1.08", "label": "Tech" },
+        { "value": "GRP.1.09", "label": "DAGS" },
+        { "value": "GRP.1.10", "label": "OPS" },
+        { "value": "GRP.1.11", "label": "Race Control" },
+        { "value": "GRP.1.12", "label": "Managmenet" },
+        { "value": "GRP.1.13", "label": "Spotters" }
+    ]
+}
