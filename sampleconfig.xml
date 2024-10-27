@@ -1,0 +1,70 @@
+ 
+  
+
+
+<?xml version="1.0" encoding="utf-16"?>
+<ExportKeySet panel="PRT.1.614" panelType="EdgeRole" versionNo="3">
+	<ShiftPages />
+	<keys>
+		<exportkey number="0" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="GRP.1.17" />
+		<exportkey number="1" page="0" region="0" activation="2" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.15" />
+		<exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.8" />
+		<exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.18" />
+		<exportkey number="4" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="REPLY1" />
+		<exportkey number="5" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.3" />
+		<exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.4" />
+		<exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.6" />
+		<exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="CNF.1.7" />
+	</keys>
+	<BinauralEntities>
+		<BinauralEntity entity="PartyLines: 18; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="18" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 2; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="2" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 7; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="7" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 6; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="6" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 14; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="14" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 3; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="3" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+		<BinauralEntity entity="PartyLines: 5; Configurations: 22; Frames: 1; " level="0">
+			<EntityLocations>
+				<EntityLocation FieldName="6" FieldNameForComparison="6" FieldPosition="5" FieldType="25" />
+				<EntityLocation FieldName="17" FieldNameForComparison="17" FieldPosition="22" FieldType="6" />
+				<EntityLocation FieldName="16" FieldNameForComparison="16" FieldPosition="1" FieldType="13" />
+			</EntityLocations>
+		</BinauralEntity>
+	</BinauralEntities>
+</ExportKeySet> 
