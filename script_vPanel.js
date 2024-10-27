@@ -42,7 +42,7 @@ function loadFile(event, targetsData) {
         
         // Set the filename input to the uploaded file's name, stripping the date
         const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.xml$/, ''); // Remove _YYYY-MM-DD and .xml extension
+        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Remove _YYYY-MM-DD and .ccl extension
         fileNameInput.value = baseFileName; // Set the stripped filename
     };
     reader.readAsText(file);
@@ -80,7 +80,7 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
 function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
-    const xmlFileName = `${fileName}_${today}.xml`;
+    const xmlFileName = `${fileName}_${today}.ccl`;
 
     const xmlContent = `<?xml version="1.0" encoding="utf-16"?>
 <ExportKeySet panel="${fileName}" panelType="EdgeRole" versionNo="3">
@@ -88,16 +88,16 @@ function generateXML() {
     <keys>
         <exportkey number="0" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target0').value}" />
         <exportkey number="1" page="0" region="0" activation="2" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target1').value}" />
-        <exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target2').value}" />
-        <exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target3').value}" />
+        <exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target2').value}" />
+        <exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target3').value}" />
         <exportkey number="4" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target4').value}" />
         <exportkey number="5" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target5').value}" />
-        <exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target6').value}" />
-        <exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target7').value}" />
-        <exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target8').value}" />
-        <exportkey number="9" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target9').value}" />
-        <exportkey number="10" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target10').value}" />
-        <exportkey number="11" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target11').value}" />
+        <exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target6').value}" />
+        <exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target7').value}" />
+        <exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target8').value}" />
+        <exportkey number="9" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target9').value}" />
+        <exportkey number="10" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target10').value}" />
+        <exportkey number="11" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target11').value}" />
 
         </keys>
     <BinauralEntities>

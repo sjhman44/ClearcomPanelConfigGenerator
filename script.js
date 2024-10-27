@@ -41,7 +41,7 @@ function loadFile(event, targetsData) {
         
         // Set the filename input to the uploaded file's name, stripping the date
         const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.xml$/, ''); // Remove _YYYY-MM-DD and .xml extension
+        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Remove _YYYY-MM-DD and .ccl extension
         fileNameInput.value = baseFileName; // Set the stripped filename
     };
     reader.readAsText(file);
@@ -78,7 +78,7 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
 function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
-    const xmlFileName = `${fileName}_${today}.xml`;
+    const xmlFileName = `${fileName}_${today}.ccl`;
 
     const xmlContent = `<?xml version="1.0" encoding="utf-16"?>
 <ExportKeySet panel="${fileName}" panelType="EdgeRole" versionNo="3">
