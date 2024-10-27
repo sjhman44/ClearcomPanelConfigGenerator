@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clearcom Freespeak Edge Beltpack Config Generator</title>
+    <title>Clearcom VPanel Config Generator</title>
     <link rel="stylesheet" href="styles_VPanel.css">
 </head>
 <body>
-    <h1>Clearcom Freespeak Edge Beltpack Config Generator</h1>
+    <h1>Clearcom VPanel Config Generator</h1>
     
     <div id="file-upload">
     <!-- Exisitng Config Upload -->
@@ -21,25 +21,88 @@
     <div id="dropdowns">
         <!-- Dropdowns 4-7 arranged in a line above -->
         <div id="dropdownLine">
-            <select id="target0"></select>
-            <select id="target1"></select>
-            <select id="target2"></select>
-            <select id="target3"></select>
-            <select id="target5"></select>
-            <select id="target6"></select>
-            <select id="target7"></select>
-            <select id="target8"></select>
-            <select id="target9"></select>
-            <select id="target10"></select>
-            <select id="target11"></select>
-            <select id="target12"></select>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly0" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target0"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly1" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target1"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly2" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target2"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly3" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target3"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly4" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target4"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly5" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target5"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly6" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target6"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly7" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target7"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly8" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target8"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly9" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target9"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly10" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target10"></select>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ListenOnly11" />
+            </div>
+            <div class="dropdown-item">
+                <select id="target11"></select>
+            </div>
+            
         </div>
-
     </div>
+    
+
+    
 
 </div>
 <div id="button-container"></div>
-<button onclick="generateXML()">Generate beltpack Config</button>
+<button onclick="generateXML()">Generate Panel Config</button>
 <a id="downloadLink" style="display:none;"></a>
 </div>
 
