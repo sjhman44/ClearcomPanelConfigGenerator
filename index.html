@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clearcom Beltpack Config Generator</title>
+    <title>Clearcom Freespeak Edge Beltpack Config Generator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Clearcom Beltpack Config Generator</h1>
-
+    <h1>Clearcom Freespeak Edge Beltpack Config Generator</h1>
+    
+    <div id="file-upload">
+    <!-- Exisitng Config Upload -->
     <label for="fileUpload">Upload Your Existing Config:</label>
     <input type="file" id="fileUpload" accept=".xml">
-
-
-    <label for="fileName">Enter Your name:</label>
+    </div>
+    <div id="file-name">
+    <label for="fileName">Enter your name:</label>
     <input type="text" id="fileName" placeholder="Enter Your Name">
-
+    </div>
     <div id="dropdowns">
         <!-- Dropdowns 4-7 arranged in a line above -->
         <div id="dropdownLine">
@@ -32,10 +34,13 @@
             <select id="target2"></select>
             <select id="target3"></select>
         </div>
-
-        <button onclick="generateXML()">Generate beltpack Config</button>
-        <a id="downloadLink" style="display:none;"></a>
     </div>
+
+</div>
+<div id="button-container"></div>
+<button onclick="generateXML()">Generate beltpack Config</button>
+<a id="downloadLink" style="display:none;"></a>
+</div>
 
     <script src="script.js"></script>
 </body>
