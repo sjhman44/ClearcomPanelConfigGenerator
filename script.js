@@ -58,7 +58,7 @@ function generateXML() {
     downloadLink.href = url;
     downloadLink.download = xmlFileName;
     downloadLink.style.display = 'block';
-    downloadLink.textContent = 'Download XML';
+    downloadLink.textContent = 'Download File';
 }
 
 // Call populateDropdowns when the page is loaded

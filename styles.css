@@ -5,7 +5,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /*121212 dark mode f4f4f4 off white*/
     margin: 0;
     padding: 20px;
 }
@@ -14,9 +14,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff;
+    margin-top: 0px;
+    padding: 30px;
+    background-color: #f4f4f4; /*light theme #fff*/
+    background-image: url('ClearcomBeltpackFSE.jpg'); /* Update this path */
+    background-size: 100% 100%; /* 100% width, 50% height of the container */
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -28,6 +32,7 @@ body {
     grid-template-rows: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 15px;
+    margin-top: 50px;
 }
 
 #dropdownLine {
@@ -68,4 +73,9 @@ button:hover {
 
 #downloadLink:hover {
     text-decoration: underline;
+}
+input[type="text"] {
+    padding: 15px; /* Increase this value for more padding */
+    font-size: 16px; /* Adjust font size as needed */
+    margin-bottom: 20px; /* Add space below the text input */
 }

@@ -1,7 +1,10 @@
 {
     "targets": [
+        { "value": "", "label": "" },
         { "value": "GRP.1.01", "label": "Car6" },
         { "value": "GRP.1.02", "label": "Car7" },
+        { "value": "GRP.1.15", "label": "Crew6" },
+        { "value": "GRP.1.14", "label": "Crew7" },
         { "value": "GRP.1.03", "label": "Garage6" },
         { "value": "GRP.1.04", "label": "Garage7" },
         { "value": "GRP.1.05", "label": "Pitwall6" },
