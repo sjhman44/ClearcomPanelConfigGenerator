@@ -1,20 +1,20 @@
 {
     "targets": [
         { "value": "", "label": "" },
-        { "value": "GRP.1.01", "label": "Car6" },
-        { "value": "GRP.1.02", "label": "Car7" },
-        { "value": "GRP.1.15", "label": "Crew6" },
-        { "value": "GRP.1.14", "label": "Crew7" },
-        { "value": "GRP.1.03", "label": "Garage6" },
-        { "value": "GRP.1.04", "label": "Garage7" },
-        { "value": "GRP.1.05", "label": "Pitwall6" },
-        { "value": "GRP.1.06", "label": "Pitwall7" },
-        { "value": "GRP.1.07", "label": "Pitwall All" },
-        { "value": "GRP.1.08", "label": "Tech" },
-        { "value": "GRP.1.09", "label": "DAGS" },
-        { "value": "GRP.1.10", "label": "OPS" },
-        { "value": "GRP.1.11", "label": "Race Control" },
-        { "value": "GRP.1.12", "label": "Managmenet" },
-        { "value": "GRP.1.13", "label": "Spotters" }
+        { "value": "CNF.0.1", "label": "Car6" },
+        { "value": "CNF.0.2", "label": "Car7" },
+        { "value": "CNF.0.15", "label": "Crew6" },
+        { "value": "CNF.0.14", "label": "Crew7" },
+        { "value": "CNF.0.03", "label": "Garage6" },
+        { "value": "CNF.0.04", "label": "Garage7" },
+        { "value": "CNF.0.05", "label": "Pitwall6" },
+        { "value": "CNF.0.06", "label": "Pitwall7" },
+        { "value": "CNF.0.07", "label": "Pitwall All" },
+        { "value": "CNF.0.08", "label": "Tech" },
+        { "value": "CNF.0.09", "label": "DAGS" },
+        { "value": "CNF.0.10", "label": "OPS" },
+        { "value": "CNF.0.11", "label": "Race Control" },
+        { "value": "CNF.0.12", "label": "Managmenet" },
+        { "value": "CNF.0.13", "label": "Spotters" }
     ]
 }

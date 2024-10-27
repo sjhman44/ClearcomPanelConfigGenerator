@@ -1,7 +1,7 @@
 function populateDropdowns(data) {
     const targetIds = [
         'target0', 'target1', 'target2', 'target3',
-        'target5', 'target6', 'target7','target8'
+        'target4'
     ];
 
     // Populate each dropdown with the options from targets.json
@@ -26,22 +26,27 @@ function loadFile(event, targetsData) {
     const reader = new FileReader();
     reader.onload = function (e) {
         const content = e.target.result;
+        
+        // Log the file content to inspect what is being loaded
+        console.log("File content:", content);
+
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(content, "application/xml");
+        const xmlDoc = parser.parseFromString(content, "text/xml");
 
         // Check for errors in parsing
         const parseError = xmlDoc.getElementsByTagName("parsererror");
         if (parseError.length > 0) {
-            console.error("Error parsing XML:", parseError[0].textContent);
+            console.error("Parsing Error:", parseError[0].textContent);
             return;
         }
 
         // Populate fields from XML
         populateFieldsFromXML(xmlDoc, targetsData);
-        
+
         // Set the filename input to the uploaded file's name, stripping the date
         const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Remove _YYYY-MM-DD and .ccl extension
+        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Removes date and .xml or .ccl extensions
+        console.log("Base filename:", baseFileName); // Log the stripped filename
         fileNameInput.value = baseFileName; // Set the stripped filename
     };
     reader.readAsText(file);
@@ -52,8 +57,7 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
 
     // Populate dropdowns from XML
     const targetIds = [
-        'target0', 'target1', 'target2', 'target3',
-        'target5', 'target6', 'target7','target8'
+        'target0', 'target1', 'target2', 'target3', 'target4'
     ];
 
     if (exportKeys.length > 0) {
@@ -74,31 +78,26 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
         populateDropdowns(targetsData);
     }
 }
-
-function generateXML() {
+async function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
     const xmlFileName = `${fileName}_${today}.ccl`;
 
-    const xmlContent = `<?xml version="1.0" encoding="utf-16"?>
-<ExportKeySet panel="${fileName}" panelType="EdgeRole" versionNo="3">
-    <ShiftPages />
-    <keys>
-        <exportkey number="0" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target0').value}" />
-        <exportkey number="1" page="0" region="0" activation="2" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target1').value}" />
-        <exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target2').value}" />
-        <exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target3').value}" />
-        <exportkey number="4" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="REPLY1" />
-        <exportkey number="5" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target5').value}" />
-        <exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target6').value}" />
-        <exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target7').value}" />
-        <exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target8').value}" />
-    </keys>
-    <BinauralEntities>
-        <!-- Additional BinauralEntity entries can go here -->
-    </BinauralEntities>
-</ExportKeySet>`;
+    // Fetch the template XML file
+    const response = await fetch('FSII_template.xml');
+    const xmlTemplate = await response.text();
 
+    // Replace placeholders with actual values
+    const xmlContent = xmlTemplate
+        .replace(/{fileName}/g, fileName)
+        .replace(/{target0}/g, document.getElementById('target0').value)
+        .replace(/{target1}/g, document.getElementById('target1').value)
+        .replace(/{target2}/g, document.getElementById('target2').value)
+        .replace(/{target3}/g, document.getElementById('target3').value)
+        .replace(/{target4}/g, document.getElementById('target3').value)
+       
+
+    // Create a Blob and download link for the XML
     const blob = new Blob([xmlContent], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.getElementById('downloadLink');
@@ -108,12 +107,13 @@ function generateXML() {
     downloadLink.textContent = 'Download File';
 }
 
+
 // Fetch targets.json on page load
 window.onload = function() {
-    fetch('targets.json')
+    fetch('../targets.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Cannot load targets.json');
             }
             return response.json();
         })

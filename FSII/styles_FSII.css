@@ -1,0 +1,157 @@
+/* CSS for styling */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color for contrast */
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container for File Upload and File Name */
+#fileContainer {
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: flex-start; /* Align items to the start of the container */
+    width: 100%;             /* Full width of the page */
+    margin-bottom: 20px;     /* Space below the container */
+}
+
+/* Individual Input Containers */
+.input-container {
+    flex: 1;                   /* Take equal space */
+    margin: 0 10px;           /* Space between inputs */
+    display: flex;            /* Flex for aligning label and input */
+    flex-direction: column;   /* Stack label on top of input */
+    align-items: center;      /* Center items */
+}
+
+.label {
+    margin-bottom: 5px;       /* Space between label and input */
+    font-weight: bold;        /* Make the label bold */
+    color: #ffffff;           /* White color for labels */
+}
+
+#fileUpload, #fileName {
+    padding: 10px;            /* Padding for inputs */
+    border: 1px solid #444;   /* Dark border for input */
+    border-radius: 4px;       /* Rounded corners */
+    width: 100%;
+    margin-bottom: 20px;      /* Full width to match */
+    background-color: #1e1e1e; /* Dark input background */
+    color: #ffffff;           /* White text color for inputs */
+}
+
+#fileName {
+    margin-top: 10px;        /* Space above the file name input */
+    padding-top: 10px;       /* Top padding for the file name input */
+}
+
+/* Dropdowns Container */
+#dropdowns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+    padding: 30px;
+    background-image: url('Beltpack_FSII.png'); /* Update this path */
+    background-size: 200% 200%; /* 100% width, 50% height of the container */
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow */
+}
+
+/* Dropdown Layout */
+#dropdownSquare {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+    column-gap: 40px;
+    margin-bottom: 0px;
+    margin-top: 20px;
+}
+
+#dropdownLine {
+    display: grid;
+    
+    gap: 10px;
+    align-items: center;
+}
+
+/* Dropdown and Button Styles */
+select {
+    padding: 5px;
+    border: 1px solid #444;   /* Dark border */
+    border-radius: 4px;
+    width: 100%;
+    background-color: #1e1e1e; /* Dark background for dropdowns */
+    color: #ffffff;            /* White text for dropdowns */
+}
+
+button {
+    padding: 8px 15px;
+    font-size: 16px;
+    color: #ffffff;            /* White text color */
+    background-color: #454546; /* Button color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker on hover */
+}
+
+#downloadLink {
+    margin-top: 10px;
+    color: #007bff;            /* Link color */
+    text-decoration: none;
+    display: none;
+}
+
+#downloadLink:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+input[type="text"] {
+    padding: 15px;             /* Increase this value for more padding */
+    font-size: 16px;           /* Adjust font size as needed */
+    margin-bottom: 20px;       /* Add space below the text input */
+    background-color: #1e1e1e; /* Dark background */
+    color: #ffffff;            /* White text */
+}
+
+.dropdowns-container {
+    background-color: #1e1e1e; /* Dark background for dropdowns */
+    padding: 20px;
+    border-radius: 8px;        /* Optional: add rounded corners */
+    margin-bottom: 20px;       /* Space between dropdowns and button */
+}
+
+.button-container {
+    background-color: #007bff; /* Background color for buttons */
+    padding: 20px;
+    border-radius: 8px;        /* Optional: add rounded corners */
+    color: white;               /* Text color for button text */
+}
+
+.button-container button,
+.button-container a {
+    color: white;               /* Text color for button text */
+    text-decoration: none;      /* Remove underline from link */
+    padding: 10px 20px;        /* Padding for button and link */
+    border: none;
+    border-radius: 4px;        /* Rounded corners for button */
+    cursor: pointer;            /* Pointer cursor for button */
+}
+
+.button-container button:hover,
+.button-container a:hover {
+    opacity: 0.8;               /* Slightly darken button/link on hover */
+}

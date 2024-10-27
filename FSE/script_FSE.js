@@ -1,8 +1,7 @@
 function populateDropdowns(data) {
     const targetIds = [
         'target0', 'target1', 'target2', 'target3',
-        'target4', 'target5', 'target6', 'target7',
-        'target8', 'target9', 'target10', 'target11'
+        'target5', 'target6', 'target7','target8'
     ];
 
     // Populate each dropdown with the options from targets.json
@@ -27,22 +26,27 @@ function loadFile(event, targetsData) {
     const reader = new FileReader();
     reader.onload = function (e) {
         const content = e.target.result;
+        
+        // Log the file content to inspect what is being loaded
+        console.log("File content:", content);
+
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(content, "application/xml");
+        const xmlDoc = parser.parseFromString(content, "text/xml");
 
         // Check for errors in parsing
         const parseError = xmlDoc.getElementsByTagName("parsererror");
         if (parseError.length > 0) {
-            console.error("Error parsing XML:", parseError[0].textContent);
+            console.error("Parsing Error:", parseError[0].textContent);
             return;
         }
 
         // Populate fields from XML
         populateFieldsFromXML(xmlDoc, targetsData);
-        
+
         // Set the filename input to the uploaded file's name, stripping the date
         const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Remove _YYYY-MM-DD and .ccl extension
+        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, ''); // Removes date and .xml or .ccl extensions
+        console.log("Base filename:", baseFileName); // Log the stripped filename
         fileNameInput.value = baseFileName; // Set the stripped filename
     };
     reader.readAsText(file);
@@ -53,9 +57,8 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
 
     // Populate dropdowns from XML
     const targetIds = [
-        'target0', 'target1', 'target2', 'target3',
-        'target4', 'target5', 'target6', 'target7',
-        'target8', 'target9', 'target10', 'target11'
+        'target0', 'target1', 'target2', 'target3', 'target4',
+        'target5', 'target6', 'target7', 'target8'
     ];
 
     if (exportKeys.length > 0) {
@@ -88,18 +91,14 @@ function generateXML() {
     <keys>
         <exportkey number="0" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target0').value}" />
         <exportkey number="1" page="0" region="0" activation="2" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target1').value}" />
-        <exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target2').value}" />
-        <exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target3').value}" />
-        <exportkey number="4" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target4').value}" />
+        <exportkey number="2" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target2').value}" />
+        <exportkey number="3" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target3').value}" />
+        <exportkey number="4" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="REPLY1" />
         <exportkey number="5" page="0" region="0" activation="1" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target5').value}" />
-        <exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target6').value}" />
-        <exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target7').value}" />
-        <exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target8').value}" />
-        <exportkey number="9" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target9').value}" />
-        <exportkey number="10" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target10').value}" />
-        <exportkey number="11" page="0" region="0" activation="0" tfl="0" dtl="0" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target11').value}" />
-
-        </keys>
+        <exportkey number="6" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target6').value}" />
+        <exportkey number="7" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target7').value}" />
+        <exportkey number="8" page="0" region="0" activation="0" tfl="0" dtl="1" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="${document.getElementById('target8').value}" />
+    </keys>
     <BinauralEntities>
         <!-- Additional BinauralEntity entries can go here -->
     </BinauralEntities>
@@ -116,7 +115,7 @@ function generateXML() {
 
 // Fetch targets.json on page load
 window.onload = function() {
-    fetch('targets.json')
+    fetch('../targets.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
