@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clearcom Freespeak Edge Beltpack Config Generator</title>
+    <link rel="stylesheet" href="styles_FSE.css">
+</head>
+<body>
+    <h1>Clearcom Freespeak Edge Beltpack Config Generator</h1>
+    
+    <div id="file-upload">
+    <!-- Exisitng Config Upload -->
+    <label for="fileUpload">Upload Your Existing Config:</label>
+    <input type="file" id="fileUpload" accept=".ccl">
+    </div>
+    <div id="file-name">
+    <label for="fileName">Enter your name:</label>
+    <input type="text" id="fileName" placeholder="Enter Your Name">
+    </div>
+    <div id="dropdowns">
+        <!-- Dropdowns 4-7 arranged in a line above -->
+        <div id="dropdownLine">
+            <select id="target5"></select>
+            <select id="target6"></select>
+            <select id="target7"></select>
+            <select id="target8"></select>
+        </div>
+
+        <!-- Dropdowns 0-3 arranged in a square below -->
+        <div id="dropdownSquare">
+            <select id="target0"></select>
+            <select id="target1"></select>
+            <select id="target2"></select>
+            <select id="target3"></select>
+        </div>
+    </div>
+
+</div>
+<div id="button-container"></div>
+<button onclick="generateXML()">Generate beltpack Config</button>
+<a id="downloadLink" style="display:none;"></a>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

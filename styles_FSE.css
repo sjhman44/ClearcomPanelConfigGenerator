@@ -37,7 +37,8 @@ body {
     padding: 10px;            /* Padding for inputs */
     border: 1px solid #ccc;   /* Border for input */
     border-radius: 4px;       /* Rounded corners */
-    width: 100%;               /* Full width to match */
+    width: 100%;
+    margin-bottom: 20px;                /* Full width to match */
 }
 
 #fileName {

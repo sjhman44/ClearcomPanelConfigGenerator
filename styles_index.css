@@ -1,0 +1,41 @@
+/* CSS for styling */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4; /*121212 dark mode f4f4f4 off white*/
+    margin: 0;
+    padding: 20px;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    margin-top: 20px; /* Space above button container */
+}
+
+.button-container a {
+    display: inline-block; /* Allow padding and margins */
+    padding: 12px 25px; /* Increased padding for better button appearance */
+    margin: 5px; /* Space between buttons */
+    background-color: #454546; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    font-size: 16px; /* Font size for buttons */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.button-container a:hover {
+    background-color: #0056b3; /* Darker background on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+footer {
+    margin-top: 20px;
+}

@@ -38,6 +38,7 @@ body {
     border: 1px solid #ccc;   /* Border for input */
     border-radius: 4px;       /* Rounded corners */
     width: 100%;               /* Full width to match */
+    margin-bottom: 20px;
 }
 
 #fileName {
