@@ -1,0 +1,3 @@
+This is a work in progress...
+
+Building a site to generate clearcom .ccl config files for Clearcom EHX Matrix, such that users can generate their own configs.
