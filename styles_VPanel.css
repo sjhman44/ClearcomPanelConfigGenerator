@@ -5,7 +5,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f4f4f4; /*121212 dark mode f4f4f4 off white*/
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color for contrast */
     margin: 0;
     padding: 20px;
 }
@@ -31,19 +32,21 @@ body {
 .label {
     margin-bottom: 5px;       /* Space between label and input */
     font-weight: bold;        /* Make the label bold */
+    color: #e0e0e0;           /* Light label color for contrast */
 }
 
 #fileUpload, #fileName {
     padding: 10px;            /* Padding for inputs */
-    border: 1px solid #ccc;   /* Border for input */
+    border: 1px solid #555;   /* Darker border for input */
     border-radius: 4px;       /* Rounded corners */
     width: 100%;               /* Full width to match */
     margin-bottom: 20px;
+    background-color: #222;   /* Dark background for inputs */
+    color: #e0e0e0;            /* Light text color in inputs */
 }
 
 #fileName {
     margin-top: 10px;        /* Space above the file name input */
-    /* Padding to create space between input fields */
     padding-top: 10px;       /* Top padding for the file name input */
 }
 
@@ -54,17 +57,17 @@ body {
     align-items: center;
     margin-top: 0px;
     padding: 30px;
-    background-color: #f4f4f4; /*light theme #fff*/
-    background-image: url('ClearcomPanel.jpg'); /* Update this path */
+  
+    background-image: url('ClearcomPanel.png'); /* Update this path */
     background-size: 100% 150%; /* 100% width, 50% height of the container */
     background-position: 00px -25px;
     background-repeat: no-repeat;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Darker shadow for depth */
     width: 100%; /* Adjust width as needed */
     max-width: 1800px; /* Limit max width for larger screens */
-    
 }
+
 #dropdownLine {
     display: grid;
     grid-template-columns: repeat(12, auto); /* Auto-width columns to avoid equal spacing */
@@ -85,36 +88,27 @@ body {
 
 select {
     width: 100%;
-    padding: 1px; /* Minimal padding for compact appearance */
+    padding: 5px; /* Increased padding for better usability */
     font-size: 13px; /* Smaller font for reduced width */
     margin: 0;
+    background-color: #222; /* Dark background for select */
+    color: #e0e0e0; /* Light text color in select */
+    border: 1px solid #555; /* Darker border */
 }
 
+/* Checkbox Styles */
 input[type="checkbox"] {
     margin: 0;
     padding: 0;
-    transform: scale(2); /* Smaller checkbox for compactness */
+    transform: scale(1.5); /* Adjust checkbox size */
 }
 
-
-
-
-
-
-
-/* Dropdown and Button Styles */
-select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-}
-
+/* Button Styles */
 button {
     padding: 8px 15px;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff;
+    background-color: #454546; /* Button background color */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -122,14 +116,14 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker background on hover */
 }
 
 #downloadLink {
     margin-top: 10px;
-    color: #007bff;
+    color: #007bff; /* Link color */
     text-decoration: none;
-    display: none;
+    display: none; /* Initially hidden */
 }
 
 #downloadLink:hover {
@@ -140,14 +134,17 @@ input[type="text"] {
     padding: 15px; /* Increase this value for more padding */
     font-size: 16px; /* Adjust font size as needed */
     margin-bottom: 20px; /* Add space below the text input */
+    background-color: #222; /* Dark background for text input */
+    color: #e0e0e0; /* Light text color in inputs */
+    border: 1px solid #555; /* Darker border */
 }
 
+/* Dropdowns Container */
 .dropdowns-container {
-    background-color: #f9f9f9; /* Background color for dropdowns */
+    background-color: #1e1e1e; /* Darker background for dropdowns */
     padding: 20px;
     border-radius: 8px; /* Optional: add rounded corners */
     margin-bottom: 20px; /* Space between dropdowns and button */
-    
 }
 
 .button-container {

@@ -5,7 +5,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #f4f4f4; /*121212 dark mode f4f4f4 off white*/
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color for contrast */
     margin: 0;
     padding: 20px;
 }
@@ -38,4 +39,5 @@ body {
 
 footer {
     margin-top: 20px;
+    color: #e0e0e0; /* Light text color for footer */
 }
