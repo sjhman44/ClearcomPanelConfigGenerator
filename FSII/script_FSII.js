@@ -1,7 +1,12 @@
 function populateDropdowns(data) {
+    console.log('Populating target dropdowns with data:', data); // Debugging
     const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
     targetIds.forEach(targetId => {
         const select = document.getElementById(targetId);
+        if (!select) {
+            console.error(`Dropdown with ID ${targetId} not found.`);
+            return; // Exit if the dropdown isn't found
+        }
         select.innerHTML = '';
         data.targets.forEach(target => {
             const option = document.createElement('option');
@@ -13,8 +18,8 @@ function populateDropdowns(data) {
 }
 
 function populateActivationDropdowns(data) {
+    console.log('Populating activation dropdowns with data:', data); // Debugging
     const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
-
     activationIDs.forEach(activationID => {
         const select = document.getElementById(activationID);
         if (!select) {
