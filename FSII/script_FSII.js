@@ -86,6 +86,8 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
             const tfl = exportKeys[i].getAttribute("tfl");
             const dtl = exportKeys[i].getAttribute("dtl");
 
+            console.log(`Checking activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`); // Debugging statement
+
             // Check for a match in activation data
             const matchingActivation = activationData.activation.find(item => 
                 item.activation === activation && item.tfl === tfl && item.dtl === dtl
@@ -93,7 +95,9 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
 
             if (matchingActivation) {
                 const select = document.getElementById(activationIDs[i]);
-                if (select) select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
+                if (select) {
+                    select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
+                }
             } else {
                 console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
             }
@@ -108,6 +112,8 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
         populateActivationDropdowns(activationData);
     }
 }
+
+
 
 
 
