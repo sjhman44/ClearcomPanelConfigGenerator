@@ -1,11 +1,11 @@
 function populateDropdowns(data) {
     console.log('Populating target dropdowns with data:', data); // Debugging
     const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
-    targetIds.forEach(targetId => {
+    targetIds.forEach((targetId, index) => {
         const select = document.getElementById(targetId);
         if (!select) {
             console.error(`Dropdown with ID ${targetId} not found.`);
-            return; // Exit if the dropdown isn't found
+            return;
         }
         select.innerHTML = '';
         data.targets.forEach(target => {
@@ -14,38 +14,49 @@ function populateDropdowns(data) {
             option.textContent = target.label;
             select.appendChild(option);
         });
+
+        // Add event listener to update activation label on target change
+        select.addEventListener('change', () => updateActivationLabel(index, select));
     });
 }
 
+function updateActivationLabel(index, select) {
+    const selectedText = select.options[select.selectedIndex].textContent; // Get the selected target label
+    const activationLabel = document.getElementById(`activationLabel${index}`); // Label for activation
+
+    if (activationLabel) {
+        activationLabel.textContent = selectedText; // Update activation label to match target
+    } else {
+        console.error(`Activation label with ID activationLabel${index} not found.`);
+    }
+}
+
+// Example of populateActivationDropdowns for setting up initial dropdowns (for context)
 function populateActivationDropdowns(data) {
-    console.log('Populating activation dropdowns with data:', data); // Debugging
+    console.log('Initializing activation dropdowns with data:', data); // Debugging
     const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
-    activationIDs.forEach(activationID => {
+    activationIDs.forEach((activationID, index) => {
         const select = document.getElementById(activationID);
         if (!select) {
             console.error(`Dropdown with ID ${activationID} not found.`);
-            return; // Exit if the dropdown isn't found
+            return;
         }
 
         select.innerHTML = ''; // Clear existing options
-
         data.activation.forEach(activation => {
             const option = document.createElement('option');
-            option.value = `${activation.activation},${activation.tfl},${activation.dtl}`; // Create a composite value
-            option.textContent = activation.label; // Display the label
-
-            // Store activation, tfl, and dtl in data attributes
-            option.dataset.activation = activation.activation; // Capture activation
-            option.dataset.tfl = activation.tfl; // Capture tfl
-            option.dataset.dtl = activation.dtl; // Capture dtl
-
+            option.value = `${activation.activation},${activation.tfl},${activation.dtl}`;
+            option.textContent = activation.label;
             select.appendChild(option);
         });
+
+        // Set the activation label text to blank initially
+        const activationLabel = document.createElement('span');
+        activationLabel.id = `activationLabel${index}`;
+        activationLabel.textContent = ''; // Blank label on load
+        select.insertAdjacentElement('beforebegin', activationLabel); // Place the label before the dropdown
     });
 }
-
-
-
 
 
 function loadFile(event, targetsData, activationData) {
@@ -82,8 +93,11 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
     if (exportKeys.length > 0) {
         for (let i = 0; i < exportKeys.length && i < targetIds.length; i++) {
             const targetValue = exportKeys[i].getAttribute("target");
-            const select = document.getElementById(targetIds[i]);
-            if (select) select.value = targetValue;
+            const targetSelect = document.getElementById(targetIds[i]);
+            if (targetSelect) {
+                targetSelect.value = targetValue;
+                updateActivationLabel(i, targetSelect); // Update activation label based on target value
+            }
         }
 
         for (let i = 0; i < exportKeys.length && i < activationIDs.length; i++) {
@@ -99,9 +113,9 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
             );
 
             if (matchingActivation) {
-                const select = document.getElementById(activationIDs[i]);
-                if (select) {
-                    select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
+                const activationSelect = document.getElementById(activationIDs[i]);
+                if (activationSelect) {
+                    activationSelect.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
                 }
             } else {
                 console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
@@ -117,6 +131,7 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
         populateActivationDropdowns(activationData);
     }
 }
+
 
 
 
