@@ -14,25 +14,25 @@ function populateDropdowns(data) {
 
 function populateActivationDropdowns(data) {
     const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
-    
+
     activationIDs.forEach(activationID => {
         const select = document.getElementById(activationID);
-        select.innerHTML = '';
+        if (!select) {
+            console.error(`Dropdown with ID ${activationID} not found.`);
+            return; // Exit if the dropdown isn't found
+        }
 
-        data.activation.forEach((activation) => {
+        select.innerHTML = ''; // Clear existing options
+
+        data.activation.forEach(activation => {
             const option = document.createElement('option');
-            
-            // Set the option's value to a unique identifier and display the label
-            option.value = `${activation.activation}-${activation.tfl}-${activation.dtl}`;
+            option.value = `${activation.activation},${activation.tfl},${activation.dtl}`; // Create a composite value
             option.textContent = activation.label; // Display the label
-            
-            // Debug log: check if the values are being set correctly
-            console.log("Adding option:", activation.label, "with value:", option.value);
 
-            // Store individual values in data attributes for easy access later
-            option.dataset.activation = activation.activation;
-            option.dataset.tfl = activation.tfl;
-            option.dataset.dtl = activation.dtl;
+            // Store activation, tfl, and dtl in data attributes
+            option.dataset.activation = activation.activation; // Capture activation
+            option.dataset.tfl = activation.tfl; // Capture tfl
+            option.dataset.dtl = activation.dtl; // Capture dtl
 
             select.appendChild(option);
         });
@@ -42,7 +42,8 @@ function populateActivationDropdowns(data) {
 
 
 
-function loadFile(event, targetsData) {
+
+function loadFile(event, targetsData, activationData) {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -58,7 +59,8 @@ function loadFile(event, targetsData) {
             return;
         }
 
-        populateFieldsFromXML(xmlDoc, targetsData);
+        // Call populateFieldsFromXML and check its logic
+        populateFieldsFromXML(xmlDoc, targetsData, activationData);
 
         const fileNameInput = document.getElementById('fileName');
         const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
@@ -67,7 +69,7 @@ function loadFile(event, targetsData) {
     reader.readAsText(file);
 }
 
-function populateFieldsFromXML(xmlDoc, targetsData) {
+function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
     const exportKeys = xmlDoc.getElementsByTagName("exportkey");
     const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
     const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
@@ -78,24 +80,41 @@ function populateFieldsFromXML(xmlDoc, targetsData) {
             const select = document.getElementById(targetIds[i]);
             if (select) select.value = targetValue;
         }
+
         for (let i = 0; i < exportKeys.length && i < activationIDs.length; i++) {
             const activation = exportKeys[i].getAttribute("activation");
             const tfl = exportKeys[i].getAttribute("tfl");
             const dtl = exportKeys[i].getAttribute("dtl");
-            const combinedValue = `activation="${activation}" tfl="${tfl}" dtl="${dtl}"`;
 
-            const select = document.getElementById(activationIDs[i]);
-            if (select) select.value = combinedValue;
+            // Check for a match in activation data
+            const matchingActivation = activationData.activation.find(item => 
+                item.activation === activation && item.tfl === tfl && item.dtl === dtl
+            );
+
+            if (matchingActivation) {
+                const select = document.getElementById(activationIDs[i]);
+                if (select) select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
+            } else {
+                console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
+            }
         }
 
         const fileNameInput = document.getElementById('fileName');
         const panelName = xmlDoc.querySelector("ExportKeySet")?.getAttribute("panel");
         fileNameInput.value = panelName || "output";
     } else {
+        console.warn('No export keys found in XML.');
         populateDropdowns(targetsData);
-        populateActivationDropdowns(targetsData);
+        populateActivationDropdowns(activationData);
     }
 }
+
+
+
+
+
+
+
 async function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
@@ -152,27 +171,42 @@ async function generateXML() {
 
 
 window.onload = function() {
+    let targetsData, activationData;
+
+    // Fetch targets.json
     fetch('../targets.json')
         .then(response => {
             if (!response.ok) throw new Error('Cannot load targets.json');
             return response.json();
         })
         .then(data => {
+            targetsData = data;
             populateDropdowns(data);
-            const fileUpload = document.getElementById('fileUpload');
-            fileUpload.addEventListener('change', function(event) {
-                loadFile(event, data);
-            });
+            console.log('Targets data loaded:', targetsData); // Debugging statement
         })
         .catch(error => console.error('Error fetching targets:', error));
 
+    // Fetch activation.json
     fetch('../activation.json')
         .then(response => {
             if (!response.ok) throw new Error('Cannot load activation.json');
             return response.json();
         })
         .then(data => {
+            activationData = data;
             populateActivationDropdowns(data);
+            console.log('Activation data loaded:', activationData); // Debugging statement
         })
         .catch(error => console.error('Error fetching activations:', error));
+
+    // File upload event listener
+    const fileUpload = document.getElementById('fileUpload');
+    fileUpload.addEventListener('change', function(event) {
+        if (targetsData && activationData) {
+            loadFile(event, targetsData, activationData);
+        } else {
+            console.warn('Targets data or activation data is not yet available.'); // Warn if data is missing
+        }
+    });
 };
+
