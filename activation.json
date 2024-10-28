@@ -1,0 +1,10 @@
+{
+    "activation": [
+        { "activation": "1", "tfl": "0", "dtl": "0", "label": "TALK" },
+        { "activation": "2", "tfl": "0", "dtl": "0", "label": "LISTEN" },
+        { "activation": "2", "tfl": "0", "dtl": "1", "label": "DUAL_TALK_LISTEN" },
+        { "activation": "0", "tfl": "0", "dtl": "0", "label": "TALK_LISTEN" },
+        { "activation": "0", "tfl": "1", "dtl": "0", "label": "TALK_FORCE_LISTEN" },
+        { "activation": "2", "tfl": "1", "dtl": "0", "label": "FORCE_LISTEN" }
+    ]
+}

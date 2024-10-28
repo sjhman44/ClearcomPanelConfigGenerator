@@ -56,9 +56,9 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 0px;
-    padding: 30px;
+    padding: 150px;
     background-image: url('Beltpack_FSII.png'); /* Update this path */
-    background-size: 200% 200%; /* 100% width, 50% height of the container */
+    background-size: 100% 100%; /* 100% width, 50% height of the container */
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 8px;
@@ -70,15 +70,16 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 10px;
+    gap: 50px;
+    row-gap:25px;
     column-gap: 40px;
     margin-bottom: 0px;
-    margin-top: 20px;
+    margin-top: -70px;
 }
 
 #dropdownLine {
     display: grid;
-    
+    margin-top: 20px;
     gap: 10px;
     align-items: center;
 }

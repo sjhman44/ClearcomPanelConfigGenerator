@@ -19,10 +19,6 @@
     <input type="text" id="fileName" placeholder="Enter Your Name">
     </div>
     <div id="dropdowns">
-        <!-- Dropdowns 4-7 arranged in a line above -->
-        <div id="dropdownLine">
-            <select id="target4"></select>
-        </div>
 
         <!-- Dropdowns 0-3 arranged in a square below -->
         <div id="dropdownSquare">
@@ -31,12 +27,24 @@
             <select id="target2"></select>
             <select id="target3"></select>
         </div>
-    </div>
 
+         <!-- Dropdowns 4-7 arranged in a line above -->
+         <div id="dropdownLine">
+            <select id="target4"></select>
+        </div>
+    </div>
+    <div id="activationmode">
+        <select id="activation0"></select>
+        <select id="activation1"></select>
+        <select id="activation2"></select>
+        <select id="activation3"></select>
+        <select id="activation4"></select>
+    </div>
 </div>
 <div id="button-container"></div>
 <button onclick="generateXML()">Generate beltpack Config</button>
 <a id="downloadLink" style="display:none;"></a>
+
 </div>
 
     <script src="script_FSII.js"></script>
