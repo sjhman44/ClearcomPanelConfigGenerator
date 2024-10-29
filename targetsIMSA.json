@@ -13,7 +13,7 @@
         { "value": "CNF.1.11", "label": "Perfo" },
         { "value": "CNF.1.12", "label": "Managment" },
         { "value": "CNF.1.13", "label": "Garage 6" },
-        { "value": "CNF.1.14", "label": "Garage 7" }
+        { "value": "CNF.1.14", "label": "Garage 7" },
         { "value": "CNF.1.15", "label": "RaceCon" },
         { "value": "CNF.1.16", "label": "Spotters" },
         { "value": "CNF.1.18", "label": "DAGS" },
