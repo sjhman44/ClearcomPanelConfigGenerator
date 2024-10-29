@@ -110,6 +110,7 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
                 const select = document.getElementById(activationIDs[i]);
                 if (select) {
                     select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
+                    updateActivationLabel(i); // Call to update the label after setting the dropdown value
                 }
             } else {
                 console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
@@ -183,11 +184,34 @@ async function generateXML() {
     downloadLink.textContent = 'Download File';
 }
 
+
+// Function to get URL parameters
+function getUrlParameter(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+
+// default is 
+let targets;
+// Function to set the variable based on the URL parameter
+function setVariableFromUrl() {
+    const series = getUrlParameter('series'); 
+    if (series) {
+        console.log("Series: " + series +" selected.")
+        targets = '../targets' + series +".json"
+    }
+    else{
+        targets = '../targetsDEMO.json' 
+    }
+}
+
 window.onload = function() {
+    setVariableFromUrl(); //dynamically sets which target to use.
     let targetsData, activationData;
 
     // Fetch targets.json
-    fetch('../targets.json')
+    fetch(targets)
         .then(response => {
             if (!response.ok) throw new Error('Cannot load targets.json');
             return response.json();

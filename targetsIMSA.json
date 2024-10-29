@@ -1,0 +1,19 @@
+{
+    "targets": [
+        { "value": "", "label": "" },
+        { "value": "CNF.0.1", "label": "CAR6" },
+        { "value": "CNF.0.2", "label": "CAR7" },
+        { "value": "CNF.0.3", "label": "PITWALL6" },
+        { "value": "CNF.0.4", "label": "PITWALL7" },
+        { "value": "CNF.0.5", "label": "GARAGE6" },
+        { "value": "CNF.0.6", "label": "GARAGE7" },
+        { "value": "CNF.0.7", "label": "CREW6" },
+        { "value": "CNF.0.8", "label": "CREW7" },
+        { "value": "CNF.0.9", "label": "TECH" },
+        { "value": "CNF.0.10", "label": "Managment" },
+        { "value": "CNF.0.11", "label": "OPS" },
+        { "value": "CNF.0.12", "label": "DAGS" },
+        { "value": "CNF.0.13", "label": "RACE CONTROL" },
+        { "value": "CNF.0.14", "label": "PITWALL ALL" }
+    ]
+}
