@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="styles_index.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="styles_index.css">
 </head>
 <body>
     <header>
@@ -12,11 +12,20 @@
     </header>
     <nav>
         <div class="button-container">
-            <a class="button" href="FSE/FSE.html">FSE Beltpack Configurator</a>
-            <a class="button" href="FSII/FSII.html">FSII Beltpack Configurator</a>
+            <a id="link1" class="button" href="FSE/FSE.html">FSE Beltpack Configurator</a>
+            <a id="link2" class="button" href="FSII/FSII.html">FSII Beltpack Configurator</a>
         </div>
     </nav>
-    <footer>
-    </footer>
+
+    <div id="uploadPLs">
+        <label for="fileUpload">Upload the Partyline Configuration from your Matrix. This will only need to be done once. Values will persist even if you close your web browser. Values will be stored locally and never leave your device.</label>
+        <input type="file" id="fileUpload" accept=".json">
+    </div>
+    <div> 
+        <button onclick="clearStorage()">Clear Storage</button>
+        <button onclick="displayStoredData()">Display Stored Data</button>
+        <pre id="output"></pre>
+    </div>
+    <script src="script_index.js"></script>
 </body>
 </html>
