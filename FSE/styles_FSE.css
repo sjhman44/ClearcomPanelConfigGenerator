@@ -126,6 +126,27 @@ input[type="text"] {
     color: #ffffff;            /* White text */
 }
 
+/* CSS for activation labels and dropdowns */
+.activation-group {
+    display: flex; /* Use flexbox to align label and dropdown */
+    align-items: center; /* Align items vertically centered */
+    margin-bottom: 10px; /* Space between activation groups */
+}
+
+.activation-label {
+    margin-right: 10px; /* Space between label and dropdown */
+    white-space: nowrap; /* Prevent label text from wrapping */
+}
+
+.activation-dropdown {
+    flex: 1; /* Allow dropdown to take remaining space */
+    padding: 5px;
+    border: 1px solid #444; /* Dark border */
+    border-radius: 4px;
+    background-color: #1e1e1e; /* Dark background for dropdown */
+    color: #ffffff; /* White text for dropdowns */
+}
+
 .dropdowns-container {
     background-color: #1e1e1e; /* Dark background for dropdowns */
     padding: 20px;

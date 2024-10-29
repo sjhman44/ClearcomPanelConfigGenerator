@@ -1,4 +1,6 @@
-/* CSS for styling */
+/* Existing CSS with integrated styles for activation labels */
+
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -14,40 +16,41 @@ body {
 /* Container for File Upload and File Name */
 #fileContainer {
     display: flex;
-    justify-content: center; /* Center items horizontally */
-    align-items: flex-start; /* Align items to the start of the container */
-    width: 100%;             /* Full width of the page */
-    margin-bottom: 20px;     /* Space below the container */
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 /* Individual Input Containers */
 .input-container {
-    flex: 1;                   /* Take equal space */
-    margin: 0 10px;           /* Space between inputs */
-    display: flex;            /* Flex for aligning label and input */
-    flex-direction: column;   /* Stack label on top of input */
-    align-items: center;      /* Center items */
+    flex: 1;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .label {
-    margin-bottom: 5px;       /* Space between label and input */
-    font-weight: bold;        /* Make the label bold */
-    color: #ffffff;           /* White color for labels */
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #ffffff;
 }
 
-#fileUpload, #fileName {
-    padding: 10px;            /* Padding for inputs */
-    border: 1px solid #444;   /* Dark border for input */
-    border-radius: 4px;       /* Rounded corners */
+#fileUpload,
+#fileName {
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
     width: 100%;
-    margin-bottom: 20px;      /* Full width to match */
-    background-color: #1e1e1e; /* Dark input background */
-    color: #ffffff;           /* White text color for inputs */
+    margin-bottom: 20px;
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 #fileName {
-    margin-top: 10px;        /* Space above the file name input */
-    padding-top: 10px;       /* Top padding for the file name input */
+    margin-top: 10px;
+    padding-top: 10px;
 }
 
 /* Dropdowns Container */
@@ -57,12 +60,12 @@ body {
     align-items: center;
     margin-top: 0px;
     padding: 150px;
-    background-image: url('Beltpack_FSII.png'); /* Update this path */
-    background-size: 100% 100%; /* 100% width, 50% height of the container */
+    background-image: url('Beltpack_FSII.png');
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Darker shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Dropdown Layout */
@@ -71,7 +74,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 50px;
-    row-gap:25px;
+    row-gap: 25px;
     column-gap: 40px;
     margin-bottom: 0px;
     margin-top: -70px;
@@ -87,18 +90,18 @@ body {
 /* Dropdown and Button Styles */
 select {
     padding: 5px;
-    border: 1px solid #444;   /* Dark border */
+    border: 1px solid #444;
     border-radius: 4px;
     width: 100%;
-    background-color: #1e1e1e; /* Dark background for dropdowns */
-    color: #ffffff;            /* White text for dropdowns */
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 button {
     padding: 8px 15px;
     font-size: 16px;
-    color: #ffffff;            /* White text color */
-    background-color: #454546; /* Button color */
+    color: #ffffff;
+    background-color: #454546;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -106,53 +109,74 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker on hover */
+    background-color: #0056b3;
 }
 
 #downloadLink {
     margin-top: 10px;
-    color: #007bff;            /* Link color */
+    color: #007bff;
     text-decoration: none;
     display: none;
 }
 
 #downloadLink:hover {
-    text-decoration: underline; /* Underline on hover */
+    text-decoration: underline;
 }
 
 input[type="text"] {
-    padding: 15px;             /* Increase this value for more padding */
-    font-size: 16px;           /* Adjust font size as needed */
-    margin-bottom: 20px;       /* Add space below the text input */
-    background-color: #1e1e1e; /* Dark background */
-    color: #ffffff;            /* White text */
+    padding: 15px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 .dropdowns-container {
-    background-color: #1e1e1e; /* Dark background for dropdowns */
+    background-color: #1e1e1e;
     padding: 20px;
-    border-radius: 8px;        /* Optional: add rounded corners */
-    margin-bottom: 20px;       /* Space between dropdowns and button */
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
 .button-container {
-    background-color: #007bff; /* Background color for buttons */
+    background-color: #007bff;
     padding: 20px;
-    border-radius: 8px;        /* Optional: add rounded corners */
-    color: white;               /* Text color for button text */
+    border-radius: 8px;
+    color: white;
 }
 
 .button-container button,
 .button-container a {
-    color: white;               /* Text color for button text */
-    text-decoration: none;      /* Remove underline from link */
-    padding: 10px 20px;        /* Padding for button and link */
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
     border: none;
-    border-radius: 4px;        /* Rounded corners for button */
-    cursor: pointer;            /* Pointer cursor for button */
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .button-container button:hover,
 .button-container a:hover {
-    opacity: 0.8;               /* Slightly darken button/link on hover */
+    opacity: 0.8;
+}
+
+/* CSS for activation labels and dropdowns */
+.activation-group {
+    display: flex; /* Use flexbox to align label and dropdown */
+    align-items: center; /* Align items vertically centered */
+    margin-bottom: 10px; /* Space between activation groups */
+}
+
+.activation-label {
+    margin-right: 10px; /* Space between label and dropdown */
+    white-space: nowrap; /* Prevent label text from wrapping */
+}
+
+.activation-dropdown {
+    flex: 1; /* Allow dropdown to take remaining space */
+    padding: 5px;
+    border: 1px solid #444; /* Dark border */
+    border-radius: 4px;
+    background-color: #1e1e1e; /* Dark background for dropdown */
+    color: #ffffff; /* White text for dropdowns */
 }

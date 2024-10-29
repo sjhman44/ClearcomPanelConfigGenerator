@@ -10,13 +10,13 @@
     <h1>Clearcom Freespeak Edge Beltpack Config Generator</h1>
     
     <div id="file-upload">
-    <!-- Exisitng Config Upload -->
-    <label for="fileUpload">Upload Your Existing Config:</label>
-    <input type="file" id="fileUpload" accept=".xml, .ccl">
+        <!-- Existing Config Upload -->
+        <label for="fileUpload">Upload Your Existing Config:</label>
+        <input type="file" id="fileUpload" accept=".xml, .ccl">
     </div>
     <div id="file-name">
-    <label for="fileName">Enter your name:</label>
-    <input type="text" id="fileName" placeholder="Enter Your Name">
+        <label for="fileName">Enter your name:</label>
+        <input type="text" id="fileName" placeholder="Enter Your Name">
     </div>
     <div id="dropdowns">
         <!-- Dropdowns 4-7 arranged in a line above -->
@@ -40,21 +40,48 @@
     </div>
     <div id="activationmode">
         <h3>Key Mode</h3>
-        <label for="activation0" id="labelActivation0"></label><select id="activation0"></select>
-        <label for="activation1" id="labelActivation1"></label><select id="activation1"></select>
-        <label for="activation2" id="labelActivation2"></label> <select id="activation2"></select>
-        <label for="activation3" id="labelActivation3"></label> <select id="activation3"></select>
-        <label for="activation4" id="labelActivation4"></label> <select id="activation4"></select>
-        <label for="activation5" id="labelActivation5"></label> <select id="activation5"></select>
-        <label for="activation6" id="labelActivation6"></label> <select id="activation6"></select>
-        <label for="activation7" id="labelActivation7"></label> <select id="activation7"></select>
-        <label for="activation8" id="labelActivation8"></label> <select id="activation8"></select>
+        <div class="activation-group">
+            <label for="activation0" class="activation-label" id="labelActivation0"></label>
+            <select id="activation0" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation1" class="activation-label" id="labelActivation1"></label>
+            <select id="activation1" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation2" class="activation-label" id="labelActivation2"></label>
+            <select id="activation2" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation3" class="activation-label" id="labelActivation3"></label>
+            <select id="activation3" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation4" class="activation-label" id="labelActivation4"></label>
+            <select id="activation4" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation5" class="activation-label" id="labelActivation5"></label>
+            <select id="activation5" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation6" class="activation-label" id="labelActivation6"></label>
+            <select id="activation6" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation7" class="activation-label" id="labelActivation7"></label>
+            <select id="activation7" class="activation-dropdown"></select>
+        </div>
+        <div class="activation-group">
+            <label for="activation8" class="activation-label" id="labelActivation8"></label>
+            <select id="activation8" class="activation-dropdown"></select>
+        </div>
     </div>
-</div>
-<div id="button-container"></div>
-<button onclick="generateXML()">Generate beltpack Config</button>
-<a id="downloadLink" style="display:none;"></a>
-</div>
+    
+    <div id="button-container">
+        <button onclick="generateXML()">Generate Beltpack Config</button>
+        <a id="downloadLink" style="display:none;"></a>
+    </div>
 
     <script src="script_FSE.js"></script>
 </body>
