@@ -193,25 +193,39 @@ function getUrlParameter(param) {
 
 
 async function getDataFromUrl() {
+    // Check if JSON data is in local storage
+    const localStorageData = localStorage.getItem('storedJsonData');
+    if (localStorageData) {
+        return JSON.parse(localStorageData); // Load from local storage if available
+    }
+
+    // If not in local storage, check the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
     if (dataParam) {
         // Decode the base64 encoded data
         const decodedData = decodeURIComponent(escape(atob(dataParam)));
-        return JSON.parse(decodedData);
+        const jsonData = JSON.parse(decodedData);
+        // Store the parsed JSON data in local storage for future use
+        localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
+        return jsonData; // Return the parsed data
     } else {
+        // Fetch targets.json if no data is found
         try {
             const response = await fetch("../targetsDEMO.json");
             if (!response.ok) throw new Error('Cannot load targets.json');
             const data = await response.json();
-            console.log('Targets data:', data); // Debugging line
-            return data;
+            // Store fetched data in local storage
+            localStorage.setItem('storedJsonData', JSON.stringify(data));
+            return data; // Return the fetched data
         } catch (error) {
             console.error('Error fetching targets:', error);
-            return null;
+            return null; // Handle error and return null
         }
     }
 }
+
+
 
 
 async function getActivationData() {
