@@ -17,7 +17,6 @@ function handleFileUpload(event) {
             createEncodedUrl();
         } catch (error) {
             console.error('Error parsing JSON:', error);
-            alert('Invalid JSON file');
         }
     };
     reader.readAsText(file);
@@ -32,7 +31,6 @@ function displayStoredData() {
         output.textContent = JSON.stringify(JSON.parse(storedData), null, 2);
         createEncodedUrl(); // Update links if data is displayed
     } else {
-        alert('No stored data found.');
         output.textContent = ''; // Clear output if no data is found
     }
 }
@@ -87,8 +85,79 @@ function initializeLinks() {
     const storedData = localStorage.getItem('storedJsonData');
     if (storedData) {
         createEncodedUrl(); // Encode and add query string to links on load
+    } else {
+        checkForUrlData(); // Check for data in URL if nothing is stored
+    }
+}
+
+// Function to check for data in the URL and store it
+function checkForUrlData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+    
+    if (dataParam) {
+        try {
+            // Decode the data from base64 and parse it as JSON
+            const decodedData = atob(dataParam);
+            const jsonData = JSON.parse(decodedData);
+            // Store JSON data in localStorage
+            localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
+            alert('Data from URL successfully stored.');
+
+            // Update links with encoded data after storing
+            createEncodedUrl();
+        } catch (error) {
+            console.error('Error decoding URL data:', error);
+        }
     }
 }
 
 // Initialize links on page load
 window.onload = initializeLinks;
+
+function copyUrlWithData() {
+    // Get the base URL
+    const baseUrl = window.location.origin + window.location.pathname;
+
+    // Get the stored JSON data from local storage
+    const localStorageData = localStorage.getItem('storedJsonData');
+    let jsonData = '';
+
+    if (localStorageData) {
+        // If data is in local storage, use it
+        jsonData = encodeURIComponent(btoa(localStorageData));
+    } else {
+        // If not, check the URL parameters for the data
+        const urlParams = new URLSearchParams(window.location.search);
+        const dataParam = urlParams.get('data');
+        if (dataParam) {
+            // If data is found in URL, use it
+            jsonData = dataParam;
+        }
+    }
+
+    // Construct the full URL
+    const fullUrl = `${baseUrl}?data=${jsonData}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(fullUrl)
+        .then(() => {
+            alert('URL copied to clipboard!');
+        })
+        .catch(err => {
+            console.error('Error copying URL: ', err);
+        });
+}
+
+// Function to set up the copy button
+function setupCopyButton() {
+    const copyButton = document.getElementById('copyButton');
+    if (copyButton) {
+        copyButton.addEventListener('click', copyUrlWithData);
+    } else {
+        console.error('Copy button not found');
+    }
+}
+
+// Call the setup function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', setupCopyButton);
