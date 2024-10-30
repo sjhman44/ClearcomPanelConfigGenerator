@@ -134,19 +134,20 @@ function copyUrlWithData() {
     // Get the stored JSON data from local storage
     const localStorageData = localStorage.getItem('storedJsonData');
     let jsonData = '';
-
-    if (localStorageData) {
+    
+    //check the URL parameters for the data
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+    if (dataParam){
+        jsonData = dataParam;
+        console.log('Using URL DATA')
+    }
+    else if (localStorageData){
         // If data is in local storage, use it
         jsonData = encodeURIComponent(btoa(localStorageData));
-    } else {
-        // If not, check the URL parameters for the data
-        const urlParams = new URLSearchParams(window.location.search);
-        const dataParam = urlParams.get('data');
-        if (dataParam) {
-            // If data is found in URL, use it
-            jsonData = dataParam;
-        }
+        console.log('Using Stored DATA')
     }
+
 
     // Construct the full URL
     const fullUrl = `${baseUrl}?data=${jsonData}`;

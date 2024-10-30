@@ -193,15 +193,10 @@ function getUrlParameter(param) {
 
 
 async function getDataFromUrl() {
-    // Check if JSON data is in local storage
-    const localStorageData = localStorage.getItem('storedJsonData');
-    if (localStorageData) {
-        return JSON.parse(localStorageData); // Load from local storage if available
-    }
-
-    // If not in local storage, check the URL parameters
+    // Check the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
+    const localStorageData = localStorage.getItem('storedJsonData');
     if (dataParam) {
         // Decode the base64 encoded data
         const decodedData = decodeURIComponent(escape(atob(dataParam)));
@@ -212,10 +207,13 @@ async function getDataFromUrl() {
          // Redirect to the base URL without data
          const baseUrl = window.location.origin + window.location.pathname;
          window.history.replaceState({}, document.title, baseUrl);
-
-
         return jsonData; // Return the parsed data
-    } else {
+    }
+    else if (localStorageData){
+        // Check if JSON data is in local storage
+        return JSON.parse(localStorageData); // Load from local storage if available
+    } 
+    else {
         // Fetch targets.json if no data is found
         try {
             const response = await fetch("../targetsDEMO.json");
