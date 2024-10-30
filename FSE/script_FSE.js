@@ -192,49 +192,75 @@ function getUrlParameter(param) {
 }
 
 
-// default is 
-let targets;
-// Function to set the variable based on the URL parameter
-function setVariableFromUrl() {
-    const series = getUrlParameter('series'); 
-    if (series) {
-        console.log("Series: " + series +" selected.")
-        targets = '../targets' + series +".json"
+async function getDataFromUrl() {
+    // Check if JSON data is in local storage
+    const localStorageData = localStorage.getItem('storedJsonData');
+    if (localStorageData) {
+        return JSON.parse(localStorageData); // Load from local storage if available
     }
-    else{
-        targets = '../targetsDEMO.json' 
+
+    // If not in local storage, check the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+    if (dataParam) {
+        // Decode the base64 encoded data
+        const decodedData = decodeURIComponent(escape(atob(dataParam)));
+        const jsonData = JSON.parse(decodedData);
+        // Store the parsed JSON data in local storage for future use
+        localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
+
+         // Redirect to the base URL without data
+         const baseUrl = window.location.origin + window.location.pathname;
+         window.history.replaceState({}, document.title, baseUrl);
+
+
+        return jsonData; // Return the parsed data
+    } else {
+        // Fetch targets.json if no data is found
+        try {
+            const response = await fetch("../targetsDEMO.json");
+            if (!response.ok) throw new Error('Cannot load targets.json');
+            const data = await response.json();
+            // Store fetched data in local storage
+            localStorage.setItem('storedJsonData', JSON.stringify(data));
+            return data; // Return the fetched data
+        } catch (error) {
+            console.error('Error fetching targets:', error);
+            return null; // Handle error and return null
+        }
     }
 }
 
-window.onload = function() {
-    setVariableFromUrl(); //dynamically sets which target to use.
-    let targetsData, activationData;
 
-    // Fetch targets.json
-    fetch(targets)
-        .then(response => {
-            if (!response.ok) throw new Error('Cannot load targets.json');
-            return response.json();
-        })
-        .then(data => {
-            targetsData = data;
-            populateDropdowns(data);
-            console.log('Targets data loaded:', targetsData); // Debugging statement
-        })
-        .catch(error => console.error('Error fetching targets:', error));
 
-    // Fetch activation.json
-    fetch('../activation.json')
-        .then(response => {
-            if (!response.ok) throw new Error('Cannot load activation.json');
-            return response.json();
-        })
-        .then(data => {
-            activationData = data;
-            populateActivationDropdowns(data);
-            console.log('Activation data loaded:', activationData); // Debugging statement
-        })
-        .catch(error => console.error('Error fetching activations:', error));
+
+async function getActivationData() {
+    try {
+        const response = await fetch('../activation.json');
+        if (!response.ok) throw new Error('Cannot load activation.json');
+        return await response.json(); // Return the JSON data
+    } catch (error) {
+        console.error('Error fetching activation data:', error);
+        return null; // Return null or handle it appropriately
+    }
+}
+
+
+window.onload = async function() {
+    const targetsData = await getDataFromUrl(); // Await the target data
+    const activationData = await getActivationData(); // Await the activation data
+
+    if (targetsData) {
+        populateDropdowns(targetsData);
+    } else {
+        console.warn('Targets data is not available.');
+    }
+
+    if (activationData) {
+        populateActivationDropdowns(activationData);
+    } else {
+        console.warn('Activation data is not available.');
+    }
 
     // File upload event listener
     const fileUpload = document.getElementById('fileUpload');
@@ -246,3 +272,4 @@ window.onload = function() {
         }
     });
 };
+
