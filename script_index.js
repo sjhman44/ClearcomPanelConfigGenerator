@@ -22,6 +22,7 @@ function handleFileUpload(event) {
     reader.readAsText(file);
 }
 
+/* DEPRECIATED
 // Function to display stored data
 function displayStoredData() {
     const storedData = localStorage.getItem('storedJsonData');
@@ -34,6 +35,7 @@ function displayStoredData() {
         output.textContent = ''; // Clear output if no data is found
     }
 }
+*/
 
 // Function to clear storage
 function clearStorage() {
@@ -63,6 +65,7 @@ function createEncodedUrl() {
     // Convert JSON data to base64
     const encodedData = btoa(storedData);
 
+    /* DEPRECIATED
     // Apply encoded data to all links with IDs that start with "link"
     const links = document.querySelectorAll('a[id^="link"]');
     links.forEach(link => {
@@ -72,6 +75,7 @@ function createEncodedUrl() {
 
     // Display the encoded URL for reference
     displayEncodedUrl(`${window.location.origin}${window.location.pathname}?data=${encodedData}`);
+    */
 }
 
 // Function to display the encoded URL for easy copy or share
@@ -106,10 +110,18 @@ function checkForUrlData() {
 
             // Update links with encoded data after storing
             createEncodedUrl();
+
+            redirectWithoutData();
         } catch (error) {
             console.error('Error decoding URL data:', error);
         }
     }
+}
+
+// Function to redirect to URL without data parameter
+function redirectWithoutData() {
+    const baseUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, baseUrl); // Update the address bar without reloading
 }
 
 // Initialize links on page load
