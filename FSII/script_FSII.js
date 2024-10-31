@@ -4,46 +4,6 @@ const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3
 const panelType = 'FS2Role'
 const panelName = 'FreespeakII'
 
-/*
-function updateActivationLabel(index, select) {
-    const selectedText = select.options[select.selectedIndex].textContent; // Get the selected target label
-    const activationLabel = document.getElementById(`activationLabel${index}`); // Label for activation
-
-    if (activationLabel) {
-        activationLabel.textContent = selectedText; // Update activation label to match target
-    } else {
-        console.error(`Activation label with ID activationLabel${index} not found.`);
-    }
-}
-
-*/
-
-function loadFile(event, targetsData, activationData) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        const content = e.target.result;
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(content, "text/xml");
-
-        const parseError = xmlDoc.getElementsByTagName("parsererror");
-        if (parseError.length > 0) {
-            console.error("Parsing Error:", parseError[0].textContent);
-            return;
-        }
-
-        // Call populateFieldsFromXML and check its logic
-        populateFieldsFromXML(xmlDoc, targetsData, activationData);
-
-        const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
-        fileNameInput.value = baseFileName;
-    };
-    reader.readAsText(file);
-}
-
 function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
     const exportKeys = xmlDoc.getElementsByTagName("exportkey");
     const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
@@ -207,7 +167,7 @@ window.onload = function() {
     const fileUpload = document.getElementById('fileUpload');
     fileUpload.addEventListener('change', function(event) {
         if (targetsData && activationData) {
-            loadFile(event, targetsData, activationData);
+            loadCCLFile(event, targetsData, activationData,targetIds,activationIDs);
         } else {
             console.warn('Targets data or activation data is not yet available.'); // Warn if data is missing
         }
