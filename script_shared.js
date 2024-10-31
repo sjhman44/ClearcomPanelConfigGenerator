@@ -24,6 +24,7 @@ function handleFileUpload(event) {
 //.CCL FILE UPLOAD //REFACTORED
 function loadCCLFile(event, targetsData, activationData,targetIds,activationIDs) {
     console.log("DEBUG: loadCCLFile()")
+    let baseFileName;
     const file = event.target.files[0];
     if (!file) return;
 
@@ -43,10 +44,11 @@ function loadCCLFile(event, targetsData, activationData,targetIds,activationIDs)
         populateFieldsFromCCL(xmlDoc, targetsData, activationData,targetIds,activationIDs);
 
         const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
+        baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
         fileNameInput.value = baseFileName;
     };
     reader.readAsText(file);
+    return baseFileName;
 }
 
 
@@ -133,9 +135,9 @@ function updateActivationLabel(targetIndex) {
     }
 }
 
-
-async function generateXML() {
-    console.log("DEBUG:generateXML()")
+//EdgeRole
+async function generateCCL(targets = [], activations = [],panelType,panelName) {
+    console.log("DEBUG: generateCCL()")
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
     const xmlFileName = `${fileName}_${today}.ccl`;
@@ -143,32 +145,21 @@ async function generateXML() {
     const response = await fetch('FSE_template.xml');
     const xmlTemplate = await response.text();
 
-    // Collect values from target dropdowns
-    const targetValues = [
-        document.getElementById('target0').value,
-        document.getElementById('target1').value,
-        document.getElementById('target2').value,
-        document.getElementById('target3').value,
-        document.getElementById('target4').value,
-        document.getElementById('target5').value,
-        document.getElementById('target6').value,
-        document.getElementById('target7').value,
-        document.getElementById('target8').value
-    ];
+    // Collect values from the provided target array
+    const targetValues = targets.map((targetId) => document.getElementById(targetId).value);
 
-    // Collect values from activation dropdowns
-    const activationValues = [];
-    for (let i = 0; i < 9; i++) {
-        const activationSelect = document.getElementById(`activation${i}`);
+    // Collect values from the activation array
+    const activationValues = activations.map((activationId) => {
+        const activationSelect = document.getElementById(activationId);
         const selectedOption = activationSelect.options[activationSelect.selectedIndex];
-
+        
         // Add the individual values of activation, tfl, and dtl from the selected option
-        activationValues.push({
+        return {
             activation: selectedOption.dataset.activation,
             tfl: selectedOption.dataset.tfl,
             dtl: selectedOption.dataset.dtl
-        });
-    }
+        };
+    });
 
     // Replace placeholders in the template XML
     let xmlContent = xmlTemplate;
@@ -181,7 +172,8 @@ async function generateXML() {
             .replace(`{tfl${index}}`, activation.tfl)
             .replace(`{dtl${index}}`, activation.dtl);
     });
-
+    xmlContent = xmlContent.replace(`{panelType}`, panelType);
+    xmlContent = xmlContent.replace(`{panelName}`, panelName);
     // Create a Blob and download link for the XML
     const blob = new Blob([xmlContent], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);

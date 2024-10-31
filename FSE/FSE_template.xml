@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
-<ExportKeySet panel="${fileName}" panelType="EdgeRole" versionNo="3">
+<ExportKeySet panel="{panelName}" panelType="{panelType}" versionNo="3">
      <ShiftPages />
     <keys> 
     <exportkey number="0" page="0" region="0" activation="{activation0}" tfl="{tfl0}" dtl="{dtl0}" localassign="1" interlockedgroup="0" levelcontrol="0" keygrouptarget="00000000-0000-0000-0000-000000000000" ColourIndexOverride="0" dl="0" target="{target0}" />
