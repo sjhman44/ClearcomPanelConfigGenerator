@@ -57,29 +57,13 @@ async function generateXML() {
     downloadLink.textContent = 'Download File';
 }
 
-// Function to get URL parameters
-function getUrlParameter(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
 
 
 // default is 
-let targets;
-// Function to set the variable based on the URL parameter
-function setVariableFromUrl() {
-    const series = getUrlParameter('series'); 
-    if (series) {
-        console.log("Series: " + series +" selected.")
-        targets = '../targets' + series +".json"
-    }
-    else{
-        targets = '../targetsDEMO.json' 
-    }
-}
+let targets = '../targetsDEMO.json' 
 
 window.onload = function() {
-    setVariableFromUrl()
+    
     let targetsData, activationData;
     // Fetch targets.json
     fetch(targets)
