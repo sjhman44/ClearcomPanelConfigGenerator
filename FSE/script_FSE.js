@@ -1,50 +1,6 @@
-function populateDropdowns(data) {
-    const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
-    targetIds.forEach(targetId => {
-        const select = document.getElementById(targetId);
-        if (!select) {
-            console.error(`Dropdown with ID ${targetId} not found.`);
-            return; // Exit if the dropdown isn't found
-        }
-        select.innerHTML = '';
-        data.targets.forEach(target => {
-            const option = document.createElement('option');
-            option.value = target.value;
-            option.textContent = target.label;
-            select.appendChild(option);
-        });
-
-        // Add change event listener for each target dropdown to update activation labels
-        select.addEventListener('change', () => updateActivationLabel(targetIds.indexOf(targetId)));
-    });
-}
-
-function populateActivationDropdowns(data) {
-    const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
-
-    activationIDs.forEach(activationID => {
-        const select = document.getElementById(activationID);
-        if (!select) {
-            console.error(`Dropdown with ID ${activationID} not found.`);
-            return; // Exit if the dropdown isn't found
-        }
-
-        select.innerHTML = ''; // Clear existing options
-
-        data.activation.forEach(activation => {
-            const option = document.createElement('option');
-            option.value = `${activation.activation},${activation.tfl},${activation.dtl}`; // Create a composite value
-            option.textContent = activation.label; // Display the label
-
-            // Store activation, tfl, and dtl in data attributes
-            option.dataset.activation = activation.activation; // Capture activation
-            option.dataset.tfl = activation.tfl; // Capture tfl
-            option.dataset.dtl = activation.dtl; // Capture dtl
-
-            select.appendChild(option);
-        });
-    });
-}
+//FSE Beltpack has 9 targets. Number 4 is the Reply Key
+const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
+const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
 
 function updateActivationLabel(targetIndex) {
     const targetSelect = document.getElementById(`target${targetIndex}`);
@@ -122,8 +78,8 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
         fileNameInput.value = panelName || "output";
     } else {
         console.warn('No export keys found in XML.');
-        populateDropdowns(targetsData);
-        populateActivationDropdowns(activationData);
+        populateDropdowns(targetsData,targetIds);
+        populateActivationDropdowns(activationData,activationIDs);
     }
 }
 
@@ -249,13 +205,13 @@ window.onload = async function() {
     const activationData = await getActivationData(); // Await the activation data
 
     if (targetsData) {
-        populateDropdowns(targetsData);
+        populateDropdowns(targetsData,targetIds);
     } else {
         console.warn('Targets data is not available.');
     }
 
     if (activationData) {
-        populateActivationDropdowns(activationData);
+        populateActivationDropdowns(activationData,activationIDs);
     } else {
         console.warn('Activation data is not available.');
     }
