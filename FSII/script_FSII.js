@@ -17,33 +17,6 @@ function updateActivationLabel(index, select) {
 }
 
 */
-// Example of populateActivationDropdowns for setting up initial dropdowns (for context)
-function populateActivationDropdowns(data) {
-    console.log('Initializing activation dropdowns with data:', data); // Debugging
-    const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
-    activationIDs.forEach((activationID, index) => {
-        const select = document.getElementById(activationID);
-        if (!select) {
-            console.error(`Dropdown with ID ${activationID} not found.`);
-            return;
-        }
-
-        select.innerHTML = ''; // Clear existing options
-        data.activation.forEach(activation => {
-            const option = document.createElement('option');
-            option.value = `${activation.activation},${activation.tfl},${activation.dtl}`;
-            option.textContent = activation.label;
-            select.appendChild(option);
-        });
-
-        // Set the activation label text to blank initially
-        const activationLabel = document.createElement('span');
-        activationLabel.id = `activationLabel${index}`;
-        activationLabel.textContent = ''; // Blank label on load
-        select.insertAdjacentElement('beforebegin', activationLabel); // Place the label before the dropdown
-    });
-}
-
 
 function loadFile(event, targetsData, activationData) {
     const file = event.target.files[0];
@@ -212,7 +185,7 @@ window.onload = function() {
         })
         .then(data => {
             targetsData = data;
-            populateDropdowns(data);
+            populateDropdowns(data,targetIds);
             console.log('Targets data loaded:', targetsData); // Debugging statement
         })
         .catch(error => console.error('Error fetching targets:', error));
