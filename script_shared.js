@@ -22,7 +22,7 @@ function handleFileUpload(event) {
 
 
 //.CCL FILE UPLOAD //REFACTORED
-function loadCCLFile(event, targetsData, activationData) {
+function loadCCLFile(event, targetsData, activationData,targetIds,activationIDs) {
     console.log("DEBUG: loadCCLFile()")
     const file = event.target.files[0];
     if (!file) return;
@@ -39,8 +39,8 @@ function loadCCLFile(event, targetsData, activationData) {
             return;
         }
 
-        // Call populateFieldsFromXML and check its logic
-        populateFieldsFromXML(xmlDoc, targetsData, activationData);
+        // Call populateFieldsFromCCL and check its logic
+        populateFieldsFromCCL(xmlDoc, targetsData, activationData,targetIds,activationIDs);
 
         const fileNameInput = document.getElementById('fileName');
         const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
@@ -135,6 +135,7 @@ function updateActivationLabel(targetIndex) {
 
 
 async function generateXML() {
+    console.log("DEBUG:generateXML()")
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
     const xmlFileName = `${fileName}_${today}.ccl`;
@@ -197,12 +198,11 @@ async function generateXML() {
 
 
 
-
-function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
+//REFACTORED
+function populateFieldsFromCCL(xmlDoc, targetsData, activationData,targetIds,activationIDs) {
+    console.log("DEBUG: populateFieldsFromCCL()")
     const exportKeys = xmlDoc.getElementsByTagName("exportkey");
-    const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
-    const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
-
+   
     if (exportKeys.length > 0) {
         for (let i = 0; i < exportKeys.length && i < targetIds.length; i++) {
             const targetValue = exportKeys[i].getAttribute("target");

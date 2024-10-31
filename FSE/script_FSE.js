@@ -2,51 +2,6 @@
 const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
 const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
 
-function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
-    const exportKeys = xmlDoc.getElementsByTagName("exportkey");
-    const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
-    const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
-
-    if (exportKeys.length > 0) {
-        for (let i = 0; i < exportKeys.length && i < targetIds.length; i++) {
-            const targetValue = exportKeys[i].getAttribute("target");
-            const select = document.getElementById(targetIds[i]);
-            if (select) select.value = targetValue;
-        }
-
-        for (let i = 0; i < exportKeys.length && i < activationIDs.length; i++) {
-            const activation = exportKeys[i].getAttribute("activation");
-            const tfl = exportKeys[i].getAttribute("tfl");
-            const dtl = exportKeys[i].getAttribute("dtl");
-
-            console.log(`Checking activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`); // Debugging statement
-
-            // Check for a match in activation data
-            const matchingActivation = activationData.activation.find(item => 
-                item.activation === activation && item.tfl === tfl && item.dtl === dtl
-            );
-
-            if (matchingActivation) {
-                const select = document.getElementById(activationIDs[i]);
-                if (select) {
-                    select.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
-                    updateActivationLabel(i); // Call to update the label after setting the dropdown value
-                }
-            } else {
-                console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
-            }
-        }
-
-        const fileNameInput = document.getElementById('fileName');
-        const panelName = xmlDoc.querySelector("ExportKeySet")?.getAttribute("panel");
-        fileNameInput.value = panelName || "output";
-    } else {
-        console.warn('No export keys found in XML.');
-        populateDropdowns(targetsData,targetIds);
-        populateActivationDropdowns(activationData,activationIDs);
-    }
-}
-
 async function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
@@ -124,7 +79,7 @@ window.onload = async function() {
     const fileUpload = document.getElementById('fileUpload');
     fileUpload.addEventListener('change', function(event) {
         if (targetsData && activationData) {
-            loadCCLFile(event, targetsData, activationData);
+            loadCCLFile(event, targetsData, activationData,targetIds,activationIDs);
         } else {
             console.warn('Targets data or activation data is not yet available.'); // Warn if data is missing
         }
