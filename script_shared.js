@@ -56,6 +56,7 @@ function loadFile(event, targetsData, activationData) {
 
 // Function to get URL parameters
 function getUrlParameter(param) {
+    console.log("DEBUG: getUrlParameter")
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
@@ -105,10 +106,11 @@ async function getDataFromUrl() {
 
 
 // CLEARCOM FUNCTIONS
-
-async function getActivationData() {
+//'../activation.json'
+async function getActivationData(data) {
+    console.log("debug: getActivationData()")
     try {
-        const response = await fetch('../activation.json');
+        const response = await fetch(data);
         if (!response.ok) throw new Error('Cannot load activation.json');
         return await response.json(); // Return the JSON data
     } catch (error) {
@@ -117,6 +119,17 @@ async function getActivationData() {
     }
 }
 
+//Refactored
+function updateActivationLabel(targetIndex) {
+    console.log("debug: updateActivationLabel()")
+    const targetSelect = document.getElementById(`target${targetIndex}`);
+    const selectedOption = targetSelect.options[targetSelect.selectedIndex];
+    const activationLabel = document.getElementById(`labelActivation${targetIndex}`);
+    
+    if (activationLabel && selectedOption) {
+        activationLabel.textContent = `${selectedOption.textContent}`; // Update label
+    }
+}
 
 
 async function generateXML() {
@@ -278,12 +291,3 @@ function populateActivationDropdowns(data,activationIDs) {
     });
 }
 
-function updateActivationLabel(targetIndex) {
-    const targetSelect = document.getElementById(`target${targetIndex}`);
-    const selectedOption = targetSelect.options[targetSelect.selectedIndex];
-    const activationLabel = document.getElementById(`labelActivation${targetIndex}`);
-    
-    if (activationLabel && selectedOption) {
-        activationLabel.textContent = `${selectedOption.textContent}`; // Update label
-    }
-}

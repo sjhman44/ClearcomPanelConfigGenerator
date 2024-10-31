@@ -2,16 +2,6 @@
 const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
 const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
 
-function updateActivationLabel(targetIndex) {
-    const targetSelect = document.getElementById(`target${targetIndex}`);
-    const selectedOption = targetSelect.options[targetSelect.selectedIndex];
-    const activationLabel = document.getElementById(`labelActivation${targetIndex}`);
-    
-    if (activationLabel && selectedOption) {
-        activationLabel.textContent = `${selectedOption.textContent}`; // Update label
-    }
-}
-
 function loadFile(event, targetsData, activationData) {
     const file = event.target.files[0];
     if (!file) return;
@@ -140,14 +130,6 @@ async function generateXML() {
     downloadLink.textContent = 'Download File';
 }
 
-
-// Function to get URL parameters
-function getUrlParameter(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
-
-
 async function getDataFromUrl() {
     // Check the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -185,24 +167,9 @@ async function getDataFromUrl() {
     }
 }
 
-
-
-
-async function getActivationData() {
-    try {
-        const response = await fetch('../activation.json');
-        if (!response.ok) throw new Error('Cannot load activation.json');
-        return await response.json(); // Return the JSON data
-    } catch (error) {
-        console.error('Error fetching activation data:', error);
-        return null; // Return null or handle it appropriately
-    }
-}
-
-
 window.onload = async function() {
     const targetsData = await getDataFromUrl(); // Await the target data
-    const activationData = await getActivationData(); // Await the activation data
+    const activationData = await getActivationData('../activation.json'); // Await the activation data
 
     if (targetsData) {
         populateDropdowns(targetsData,targetIds);
