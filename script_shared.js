@@ -21,8 +21,9 @@ function handleFileUpload(event) {
 }
 
 
-//.CCL FILE UPLOAD
-function loadFile(event, targetsData, activationData) {
+//.CCL FILE UPLOAD //REFACTORED
+function loadCCLFile(event, targetsData, activationData) {
+    console.log("DEBUG: loadCCLFile()")
     const file = event.target.files[0];
     if (!file) return;
 

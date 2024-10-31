@@ -2,32 +2,6 @@
 const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
 const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
 
-function loadFile(event, targetsData, activationData) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        const content = e.target.result;
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(content, "text/xml");
-
-        const parseError = xmlDoc.getElementsByTagName("parsererror");
-        if (parseError.length > 0) {
-            console.error("Parsing Error:", parseError[0].textContent);
-            return;
-        }
-
-        // Call populateFieldsFromXML and check its logic
-        populateFieldsFromXML(xmlDoc, targetsData, activationData);
-
-        const fileNameInput = document.getElementById('fileName');
-        const baseFileName = file.name.replace(/(_\d{4}-\d{2}-\d{2})?\.ccl$/, '');
-        fileNameInput.value = baseFileName;
-    };
-    reader.readAsText(file);
-}
-
 function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
     const exportKeys = xmlDoc.getElementsByTagName("exportkey");
     const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
@@ -187,7 +161,7 @@ window.onload = async function() {
     const fileUpload = document.getElementById('fileUpload');
     fileUpload.addEventListener('change', function(event) {
         if (targetsData && activationData) {
-            loadFile(event, targetsData, activationData);
+            loadCCLFile(event, targetsData, activationData);
         } else {
             console.warn('Targets data or activation data is not yet available.'); // Warn if data is missing
         }
