@@ -89,10 +89,13 @@ function displayEncodedUrl(url) {
 // Function to initialize and add query string to links on page load if data exists
 function initializeLinks() {
     const storedData = localStorage.getItem('storedJsonData');
-    if (storedData) {
-        createEncodedUrl(); // Encode and add query string to links on load
-    } else {
-        checkForUrlData(); // Check for data in URL if nothing is stored
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+
+    if (dataParam) {
+        createEncodedUrl(); 
+    } else if (storedData){
+        createEncodedUrl(); 
     }
 }
 
@@ -100,23 +103,22 @@ function initializeLinks() {
 function checkForUrlData() {
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
-    
+    const storedData = localStorage.getItem('storedJsonData');
     if (dataParam) {
         try {
-            // Decode the data from base64 and parse it as JSON
-            const decodedData = atob(dataParam);
+            const decodedData = decodeURIComponent(escape(atob(dataParam)));
             const jsonData = JSON.parse(decodedData);
-            // Store JSON data in localStorage
+            // Store the parsed JSON data in local storage for future use
             localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
-            alert('Data from URL successfully stored.');
-
-            // Update links with encoded data after storing
+           
             createEncodedUrl();
-
             redirectWithoutData();
         } catch (error) {
             console.error('Error decoding URL data:', error);
         }
+    }
+    else if (storedData){
+        createEncodedUrl(); 
     }
 }
 
@@ -127,7 +129,7 @@ function redirectWithoutData() {
 }
 
 // Initialize links on page load
-window.onload = initializeLinks;
+window.onload = checkForUrlData;
 
 function copyUrlWithData() {
     // Get the base URL
