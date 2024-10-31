@@ -104,43 +104,6 @@ async function generateXML() {
     downloadLink.textContent = 'Download File';
 }
 
-async function getDataFromUrl() {
-    // Check the URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const dataParam = urlParams.get('data');
-    const localStorageData = localStorage.getItem('storedJsonData');
-    if (dataParam) {
-        // Decode the base64 encoded data
-        const decodedData = decodeURIComponent(escape(atob(dataParam)));
-        const jsonData = JSON.parse(decodedData);
-        // Store the parsed JSON data in local storage for future use
-        localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
-
-         // Redirect to the base URL without data
-         const baseUrl = window.location.origin + window.location.pathname;
-         window.history.replaceState({}, document.title, baseUrl);
-        return jsonData; // Return the parsed data
-    }
-    else if (localStorageData){
-        // Check if JSON data is in local storage
-        return JSON.parse(localStorageData); // Load from local storage if available
-    } 
-    else {
-        // Fetch targets.json if no data is found
-        try {
-            const response = await fetch("../targetsDEMO.json");
-            if (!response.ok) throw new Error('Cannot load targets.json');
-            const data = await response.json();
-            // Store fetched data in local storage
-            localStorage.setItem('storedJsonData', JSON.stringify(data));
-            return data; // Return the fetched data
-        } catch (error) {
-            console.error('Error fetching targets:', error);
-            return null; // Handle error and return null
-        }
-    }
-}
-
 window.onload = async function() {
     const targetsData = await getDataFromUrl(); // Await the target data
     const activationData = await getActivationData('../activation.json'); // Await the activation data

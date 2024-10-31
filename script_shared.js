@@ -68,6 +68,7 @@ function redirectWithoutData() {
 }
 
 async function getDataFromUrl() {
+    console.log("DEBUG: getDataFromURL()")
     // Check the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
