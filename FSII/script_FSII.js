@@ -4,62 +4,6 @@ const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3
 const panelType = 'FS2Role'
 const panelName = 'FreespeakII'
 
-function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
-    const exportKeys = xmlDoc.getElementsByTagName("exportkey");
-    const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
-    const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
-
-    if (exportKeys.length > 0) {
-        for (let i = 0; i < exportKeys.length && i < targetIds.length; i++) {
-            const targetValue = exportKeys[i].getAttribute("target");
-            const targetSelect = document.getElementById(targetIds[i]);
-            if (targetSelect) {
-                targetSelect.value = targetValue;
-                updateActivationLabel(i); // Update activation label based on target value
-            }
-        }
-
-        for (let i = 0; i < exportKeys.length && i < activationIDs.length; i++) {
-            const activation = exportKeys[i].getAttribute("activation");
-            const tfl = exportKeys[i].getAttribute("tfl");
-            const dtl = exportKeys[i].getAttribute("dtl");
-
-            console.log(`Checking activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`); // Debugging statement
-
-            // Check for a match in activation data
-            const matchingActivation = activationData.activation.find(item => 
-                item.activation === activation && item.tfl === tfl && item.dtl === dtl
-            );
-
-            if (matchingActivation) {
-                const activationSelect = document.getElementById(activationIDs[i]);
-                if (activationSelect) {
-                    activationSelect.value = `${matchingActivation.activation},${matchingActivation.tfl},${matchingActivation.dtl}`; // Set to the composite value
-                }
-            } else {
-                console.error(`No matching activation found for activation: ${activation}, tfl: ${tfl}, dtl: ${dtl}`);
-            }
-        }
-
-        const fileNameInput = document.getElementById('fileName');
-        const panelName = xmlDoc.querySelector("ExportKeySet")?.getAttribute("panel");
-        fileNameInput.value = panelName || "output";
-    } else {
-        console.warn('No export keys found in XML.');
-        populateDropdowns(targetsData);
-        populateActivationDropdowns(activationData,activationIDs);
-    }
-}
-
-
-
-
-
-
-
-
-
-
 async function generateXML() {
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
