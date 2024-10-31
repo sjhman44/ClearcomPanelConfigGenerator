@@ -3,14 +3,36 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text color for contrast */
+    align-items: center; /* Center all content horizontally */
+    justify-content: flex-start; /* Align content from the top */
+    background-color: #121212;
+    color: #e0e0e0;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
+/* QR Code Container */
+.qr-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center QR code horizontally */
+    width: 100%;             /* Full width */
+    margin-bottom: 20px;
+}
+
+#qrCodeCanvas {
+    max-width: 300px;
+    width: 100%;             /* Ensure QR code scales to fit */
+}
+/* Button Container */
+.main-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    margin-top: 30px; /* Space above button container */
+}
 /* Button Container */
 .button-container {
     display: flex;
@@ -31,13 +53,22 @@ body {
     font-size: 16px; /* Font size for buttons */
     transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
 }
-
+/* Button Container */
+.clear-button-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    margin-top: 20px; /* Space above button container */
+}
 .button-container a:hover {
-    background-color: #0056b3; /* Darker background on hover */
-    transform: translateY(-2px); /* Lift effect on hover */
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
+/* Footer styling */
 footer {
     margin-top: 20px;
-    color: #e0e0e0; /* Light text color for footer */
+    color: #e0e0e0;
+    text-align: center;
+    width: 100%;
 }

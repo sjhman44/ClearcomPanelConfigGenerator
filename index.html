@@ -17,18 +17,24 @@
         </div>
     </nav>
 
-    <div id="uploadPLs">
-        <label for="fileUpload">Upload the Partyline Configuration from your Matrix. This will only need to be done once. Values will persist even if you close your web browser. Values will be stored locally and never leave your device.</label>
-        <input type="file" id="fileUpload" accept=".json">
-    </div>
-    <div> 
-        <button onclick="clearStorage()">Clear Saved Partylines</button>
-        <button id="copyButton">SHAREABLE LINK</button>
-    </div>
-    <script src="script_index.js"></script>
+    <div class="main-container">
+        <div id="uploadPLs">
+            <label for="fileUpload">Upload the Partyline Configuration from your Matrix. This will only need to be done once. Values will persist even if you close your web browser. Values will be stored locally and never leave your device.</label>
+            <input type="file" id="fileUpload" accept=".json">
+        </div>
 
-    <div>
-       
+        <div class="qr-container">
+            <canvas id="qrCodeCanvas"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+        </div>
+        <div class="button-container">
+            <button id="copyButton">Copy Sharable Link & Create QR Code</button>
+        </div>
+        <div class="clear-button-container">
+            <button onclick="clearStorage()">Clear Saved Partylines</button>
+        </div>
     </div>
+
+    <script src="script_index.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ function handleFileUpload(event) {
             // Store JSON data in localStorage
             localStorage.setItem('storedJsonData', JSON.stringify(jsonData));
             alert('Data successfully stored.');
-
+            clearQrCode()
             // Update links with encoded data after upload
             createEncodedUrl();
         } catch (error) {
@@ -39,6 +39,7 @@ function displayStoredData() {
 
 // Function to clear storage
 function clearStorage() {
+    clearQrCode()
     localStorage.removeItem('storedJsonData');
     alert('Stored data cleared.');
 
@@ -51,6 +52,7 @@ function clearStorage() {
 
     // Clear output display
     document.getElementById('output').textContent = '';
+    
 }
 
 // Function to create and apply encoded URL to links
@@ -135,19 +137,17 @@ function copyUrlWithData() {
     const localStorageData = localStorage.getItem('storedJsonData');
     let jsonData = '';
     
-    //check the URL parameters for the data
+    // Check the URL parameters for the data
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
-    if (dataParam){
+    if (dataParam) {
         jsonData = dataParam;
-        console.log('Using URL DATA')
-    }
-    else if (localStorageData){
+        console.log('Using URL DATA');
+    } else if (localStorageData) {
         // If data is in local storage, use it
         jsonData = encodeURIComponent(btoa(localStorageData));
-        console.log('Using Stored DATA')
+        console.log('Using Stored DATA');
     }
-
 
     // Construct the full URL
     const fullUrl = `${baseUrl}?data=${jsonData}`;
@@ -156,6 +156,9 @@ function copyUrlWithData() {
     navigator.clipboard.writeText(fullUrl)
         .then(() => {
             alert('URL copied to clipboard!');
+
+            // Generate the QR code
+            generateQRCode(fullUrl);
         })
         .catch(err => {
             console.error('Error copying URL: ', err);
@@ -174,3 +177,23 @@ function setupCopyButton() {
 
 // Call the setup function when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', setupCopyButton);
+
+// Function to generate the QR code and display it in the canvas
+function generateQRCode(url) {
+    clearQrCode()
+    const qrCanvas = document.getElementById('qrCodeCanvas');
+    
+    // Create a new QRious instance to draw the QR code on the canvas
+    const qr = new QRious({
+        element: qrCanvas,
+        value: url,
+        size: 256,             // Set the size of the QR code (optional)
+        background: '#ffffff', // Background color (optional)
+        foreground: '#000000'  // Foreground color (optional)
+    });
+}
+function clearQrCode() {
+    const qrCanvas = document.getElementById('qrCodeCanvas');
+    const qrContext = qrCanvas.getContext('2d');
+    qrContext.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+}
