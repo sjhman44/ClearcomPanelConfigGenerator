@@ -2,7 +2,7 @@
 const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4', 'target5', 'target6', 'target7', 'target8'];
 const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4', 'activation5', 'activation6', 'activation7', 'activation8'];
 const panelType = 'EdgeRole'
-const panelName = 'Edge'
+let panelName = 'Edge'
 // Function to handle the button click
 function handleGenerateXMLButtonClick() {
     generateCCL(targetIds, activationIDs,panelType,panelName,'FSE_template.xml'); // Call generateXML with the arrays
