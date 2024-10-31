@@ -136,13 +136,13 @@ function updateActivationLabel(targetIndex) {
 }
 
 //EdgeRole
-async function generateCCL(targets = [], activations = [],panelType,panelName) {
+async function generateCCL(targets = [], activations = [],panelType,panelName,tempalte) {
     console.log("DEBUG: generateCCL()")
     const fileName = document.getElementById('fileName').value || 'output';
     const today = new Date().toISOString().split('T')[0];
     const xmlFileName = `${fileName}_${today}.ccl`;
 
-    const response = await fetch('FSE_template.xml');
+    const response = await fetch(tempalte);
     const xmlTemplate = await response.text();
 
     // Collect values from the provided target array
