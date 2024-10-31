@@ -1,25 +1,10 @@
-function populateDropdowns(data) {
-    console.log('Populating target dropdowns with data:', data); // Debugging
-    const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
-    targetIds.forEach((targetId, index) => {
-        const select = document.getElementById(targetId);
-        if (!select) {
-            console.error(`Dropdown with ID ${targetId} not found.`);
-            return;
-        }
-        select.innerHTML = '';
-        data.targets.forEach(target => {
-            const option = document.createElement('option');
-            option.value = target.value;
-            option.textContent = target.label;
-            select.appendChild(option);
-        });
+//FSII Beltpack has 5 targets. Number 4 is the Reply Key
+const targetIds = ['target0', 'target1', 'target2', 'target3', 'target4'];
+const activationIDs = ['activation0', 'activation1', 'activation2', 'activation3', 'activation4'];
+const panelType = 'FS2Role'
+const panelName = 'FreespeakII'
 
-        // Add event listener to update activation label on target change
-        select.addEventListener('change', () => updateActivationLabel(index, select));
-    });
-}
-
+/*
 function updateActivationLabel(index, select) {
     const selectedText = select.options[select.selectedIndex].textContent; // Get the selected target label
     const activationLabel = document.getElementById(`activationLabel${index}`); // Label for activation
@@ -31,6 +16,7 @@ function updateActivationLabel(index, select) {
     }
 }
 
+*/
 // Example of populateActivationDropdowns for setting up initial dropdowns (for context)
 function populateActivationDropdowns(data) {
     console.log('Initializing activation dropdowns with data:', data); // Debugging
@@ -96,7 +82,7 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
             const targetSelect = document.getElementById(targetIds[i]);
             if (targetSelect) {
                 targetSelect.value = targetValue;
-                updateActivationLabel(i, targetSelect); // Update activation label based on target value
+                updateActivationLabel(i); // Update activation label based on target value
             }
         }
 
@@ -128,7 +114,7 @@ function populateFieldsFromXML(xmlDoc, targetsData, activationData) {
     } else {
         console.warn('No export keys found in XML.');
         populateDropdowns(targetsData);
-        populateActivationDropdowns(activationData);
+        populateActivationDropdowns(activationData,activationIDs);
     }
 }
 
@@ -239,7 +225,7 @@ window.onload = function() {
         })
         .then(data => {
             activationData = data;
-            populateActivationDropdowns(data);
+            populateActivationDropdowns(data,activationIDs);
             console.log('Activation data loaded:', activationData); // Debugging statement
         })
         .catch(error => console.error('Error fetching activations:', error));
