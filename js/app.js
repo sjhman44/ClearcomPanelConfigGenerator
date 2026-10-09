@@ -43,6 +43,7 @@ const find=v=>[...targets,...SPECIAL].find(t=>t.value===v);
 const labelOf=t=>t?((find(t)||{}).label||t):"";
 const lab=k=>labelOf(k.t);
 const msg=t=>{$("#pc").textContent=t};
+const strict=()=>targets.some(t=>t.value);   // true once a partyline list is loaded: fields then only accept entries from it
 
 /* ---------- beltpack drawings (FSII = 4 channel, FSE = 8 channel) ---------- */
 const kn=i=>i<4?"ABCD"[i]:i===4?"REPLY":"Top "+(i-4);
@@ -108,7 +109,7 @@ function drawVP(p){
  el("rect",{width:700,height:80,rx:2,fill:"#262b30"});
  [0,672].forEach(x=>{el("rect",{x,y:0,width:28,height:80,fill:"#1a1e22"});for(let i=0;i<7;i++)el("rect",{x:x+5,y:8+i*10,width:18,height:3,rx:1.5,fill:"#0e1114"})});
  el("circle",{cx:56,cy:22,r:12,fill:"#101315",stroke:"#555d64"});
- [[0,-6],[5.5,-2],[3.5,4.5],[-3.5,4.5],[-5.5,-2]].forEach(([x,y])=>el("circle",{cx:56+x,cy:22+y,r:1.4,fill:"#8c949a"}));
+ [[-5,-3.5],[5,-3.5],[-3.5,4.5],[3.5,4.5]].forEach(([x,y])=>el("circle",{cx:56+x,cy:22+y,r:1.4,fill:"#8c949a"}));
  el("circle",{cx:56,cy:57,r:12,fill:"#1d2a1f",stroke:"#6b8a6e"});el("circle",{cx:56,cy:57,r:5,fill:"#080a09"});
  el("rect",{x:92,y:43,width:14,height:7,fill:"#0a0c0d",stroke:"#555d64",rx:1});
  [[96,14],[114,14],[96,26]].forEach(([x,y])=>el("rect",{x,y,width:12,height:7,rx:3.5,fill:"#2f66c4"}));
@@ -146,27 +147,31 @@ function drawBP(){
 
 
 /* ---------- target fields: autocomplete that only accepts entries from the list (free text when there is no list) ---------- */
-const combos=new WeakMap();
+const combos=new WeakMap();let noOpen=false;
 const disp=v=>strict()&&find(v)?(find(v).label||v):v;
 function setCombo(input,v){const c=combos.get(input);c.committed=v||"";input.value=disp(v||"");c.warn()}
 function suggestions(q){
  q=q.trim().toLowerCase();
  const all=[...targets.filter(t=>t.value),...SPECIAL];
+ if(!q)return all.slice(0,500);   // nothing typed: your list in its own order
  const rank=t=>{const l=(t.label||"").toLowerCase(),v=t.value.toLowerCase();
   if(!q)return 0;if(l.startsWith(q))return 0;if(v.startsWith(q))return 1;
   if(l.split(/[\s\-_]+/).some(w=>w.startsWith(q)))return 2;if(l.includes(q)||v.includes(q))return 3;return -1};
  return all.map(t=>[rank(t),t]).filter(x=>x[0]>=0)
   .sort((a,b)=>a[0]-b[0]||(a[1].label||a[1].value).localeCompare(b[1].label||b[1].value,undefined,{numeric:true}))
-  .map(x=>x[1]).slice(0,50)}
+  .map(x=>x[1]).slice(0,500)}
 function exactMatch(q){q=q.trim().toLowerCase();return q&&[...targets,...SPECIAL].find(t=>t.value&&(t.value.toLowerCase()===q||(t.label||"").toLowerCase()===q))}
 function attachCombo(input,commit){
  const box=input.parentElement,list=document.createElement("ul"),note=document.createElement("small");
  list.className="combo-list";list.id=input.id+"-list";list.setAttribute("role","listbox");list.hidden=true;
  note.className="combo-warn";note.id=input.id+"-warn";note.hidden=true;
- box.style.position="relative";box.append(list,note);
+ const wrap=document.createElement("div"),btn=document.createElement("button");
+ wrap.className="combo-wrap";btn.type="button";btn.className="combo-btn";btn.tabIndex=-1;btn.hidden=!strict();
+ btn.setAttribute("aria-label","Show all targets");btn.textContent="\u25BE";
+ input.replaceWith(wrap);wrap.append(input,btn,list);box.appendChild(note);
  input.setAttribute("role","combobox");input.setAttribute("aria-autocomplete","list");input.setAttribute("aria-expanded","false");
  input.setAttribute("aria-controls",list.id);input.setAttribute("aria-describedby",note.id);
- const c={committed:"",items:[],active:-1,
+ const c={committed:"",items:[],active:-1,btn,
   warn(){const v=c.committed,bad=strict()&&v&&!find(v);note.hidden=!bad;if(bad)note.textContent=`"${v}" is not in your partyline list, so EHX may not accept it.`}};
  combos.set(input,c);
  const close=()=>{list.hidden=true;input.setAttribute("aria-expanded","false");input.removeAttribute("aria-activedescendant");c.active=-1};
@@ -174,17 +179,21 @@ function attachCombo(input,commit){
   const a=list.children[c.active];if(a){input.setAttribute("aria-activedescendant",a.id);a.scrollIntoView({block:"nearest"})}};
  const pickItem=t=>{c.committed=t.value;input.value=disp(t.value);close();c.warn();commit(t.value)};
  const open=()=>{
-  c.items=suggestions(input.value);list.innerHTML="";
+  const untouched=!input.value.trim()||(c.committed&&input.value===disp(c.committed));   // not typing yet: show every target
+  c.items=suggestions(untouched?"":input.value);list.innerHTML="";
   if(!c.items.length){const li=document.createElement("li");li.className="none";li.textContent="Nothing in your list matches";list.appendChild(li)}
   c.items.forEach((t,i)=>{const li=document.createElement("li");li.id=`${list.id}-${i}`;li.setAttribute("role","option");
    const a=document.createElement("span"),b=document.createElement("small");a.textContent=t.label||t.value;b.textContent=t.value;li.append(a,b);
    li.onmousedown=e=>{e.preventDefault();pickItem(t)};list.appendChild(li)});
-  c.active=c.items.length?0:-1;list.hidden=false;input.setAttribute("aria-expanded","true");mark()};
+  const cur=untouched&&c.committed?c.items.findIndex(t=>t.value===c.committed):-1;
+  c.active=c.items.length?Math.max(cur,0):-1;list.hidden=false;input.setAttribute("aria-expanded","true");mark()};
  input.addEventListener("input",()=>{
   if(!strict()){c.committed=input.value.trim();c.warn();commit(c.committed);return}   // no list: any text is accepted
   if(!input.value.trim()){c.committed="";c.warn();commit("")}                            // clearing the field clears the key
   open()});
- input.addEventListener("focus",()=>{if(strict()&&!$("#editor").hidden){input.select()}});
+ input.addEventListener("focus",()=>{if(strict()&&!noOpen){input.select();open()}});
+ input.addEventListener("click",()=>{if(strict()&&list.hidden)open()});
+ btn.addEventListener("mousedown",e=>{e.preventDefault();if(!strict())return;if(document.activeElement!==input)input.focus();if(list.hidden)open();else close()});
  input.addEventListener("keydown",e=>{
   if(!strict())return;
   if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(list.hidden)open();else if(c.items.length){c.active=(c.active+(e.key==="ArrowDown"?1:-1)+c.items.length)%c.items.length;mark()}}
@@ -193,7 +202,7 @@ function attachCombo(input,commit){
  input.addEventListener("blur",()=>{
   if(!strict()){close();return}
   const q=input.value.trim();
-  if(!q){close();return}
+  if(!q||q===disp(c.committed)){close();return}
   const ex=exactMatch(q),sg=suggestions(q);
   if(ex)pickItem(ex);else if(sg.length===1)pickItem(sg[0]);   // one possible match: take it
   else{input.value=disp(c.committed);close()}                 // anything else is not in the list, so put the old value back
@@ -203,7 +212,7 @@ function attachCombo(input,commit){
 /* ---------- key editor ---------- */
 const blank=()=>({t:"",a:0,f:0,d:1,c:0,x:{}});
 function pick(i){sel=i;drawBP();syncEd();$("#editor").hidden=false;
- $("#kt").textContent=isRot()?"Page "+(S.vpanel.p+1)+", channel "+(i+1):"Key "+kn(i);$("#tg").focus()}
+ $("#kt").textContent=isRot()?"Page "+(S.vpanel.p+1)+", channel "+(i+1):"Key "+kn(i);noOpen=true;$("#tg").focus();noOpen=false}
 function modeIdx(k){return MODES.findIndex(x=>x[1]===k.a&&x[2]===k.f&&x[3]===k.d)}
 function syncRot(){const g=VP();setCombo($("#tk"),g.k[sel]||"");$("#lo").checked=!!g.l[sel]&&!g.k[sel]}
 function syncEd(){
@@ -256,11 +265,10 @@ async function loadTargets(){
   try{const r=await fetch(u);if(r.ok){const j=await r.json();return{list:j.targets||j,src:u}}}catch(e){}}
  return{list:[],src:null}}
 /* with a list loaded, panel fields only accept entries from it; with no list they accept any text */
-const strict=()=>targets.some(t=>t.value);
-function listChanged(){if(!$("#editor").hidden)syncEd();$("#freeNote").hidden=strict()}
+function listChanged(){if(!$("#editor").hidden)syncEd();$("#freeNote").hidden=strict();document.querySelectorAll(".combo-btn").forEach(b=>b.hidden=!strict())}
 function onTargets(src){
  targets=targets.filter(t=>t&&t.value);   // the blank first entry in older JSON files is not a real target
- refresh();listChanged();
+ refresh();listChanged();hideQR();
  if(!$("#tedit").hidden)renderTE();
  msg(src?`${targets.length} targets loaded from ${src}.`:"No partyline list yet, so you can type any target. A list from your matrix is recommended, because its IDs are what actually work in the system: use Edit list, upload a JSON, or open a share link.")}
 $("#pf").onchange=async e=>{
@@ -272,9 +280,9 @@ $("#pf").onchange=async e=>{
 
 /* ---------- target list editor: build the list by hand instead of uploading one ---------- */
 const prefixOf=()=>{const p=$("#teP").value.trim()||"CNF.0.";return p.endsWith(".")?p:p+"."};
-function saveTargets(){try{localStorage.setItem(OWN,JSON.stringify(targets.filter(t=>t.value)))}catch(e){}}
+function saveTargets(){try{localStorage.setItem(OWN,JSON.stringify(targets.filter(t=>t.value).map(({value,label})=>({value,label}))))}catch(e){}}
 function applyTargets(note){
- saveTargets();refresh();listChanged();markDupes();
+ saveTargets();refresh();listChanged();markDupes();hideQR();
  msg(note||`${targets.filter(t=>t.value).length} targets (edited here, saved in this browser).`)}
 function markDupes(){
  const seen={};document.querySelectorAll("#teTable tbody input.id").forEach(i=>{const v=i.value.trim();if(v)seen[v]=(seen[v]||0)+1});
@@ -287,13 +295,23 @@ function renderTE(){
   b.className="nm";b.value=t.label;b.autocomplete="off";b.setAttribute("aria-label","Name");b.placeholder="Name shown on the panel";
   x.type="button";x.textContent="Remove";x.setAttribute("aria-label","Remove "+(t.value||"this row"));
   a.oninput=()=>{t.value=a.value.trim();applyTargets()};
-  b.oninput=()=>{t.label=b.value;applyTargets()};
+  b.oninput=()=>{t.label=b.value;if(b.value.trim())delete t._new;applyTargets()};
+  b.onkeydown=e=>{if(e.key==="Enter"&&b.value.trim()){e.preventDefault();addRow()}};   // Enter adds the next row
   x.onclick=()=>{targets.splice(targets.indexOf(t),1);renderTE();applyTargets()};
   [a,b,x].forEach(n=>{const td=document.createElement("td");td.appendChild(n);tr.appendChild(td)});
   tb.appendChild(tr)});
  markDupes();$("#teCount").textContent=targets.filter(t=>t.value).length+" targets"}
-$("#teBtn").onclick=()=>{const s=$("#tedit");s.hidden=!s.hidden;$("#teBtn").setAttribute("aria-expanded",String(!s.hidden));if(!s.hidden)renderTE()};
-$("#teAdd").onclick=()=>{targets.push({value:"",label:""});renderTE();const r=document.querySelectorAll("#teTable tbody input.id");r[r.length-1].focus()};
+function setTE(open){   // the button says what it will do: Edit list when closed, Hide list when open
+ $("#tedit").hidden=!open;$("#teBtn").setAttribute("aria-expanded",String(open));$("#teBtn").textContent=open?"Hide list":"Edit list";
+ if(open)renderTE()}
+$("#teBtn").onclick=()=>setTE($("#tedit").hidden);
+function nextId(){
+ const pre=prefixOf(),re=new RegExp("^"+pre.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(\\d+)$");let mx=0;
+ targets.forEach(t=>{const m=re.exec(t.value);if(m)mx=Math.max(mx,+m[1])});return pre+(mx+1)}
+function addRow(){
+ targets.push({value:nextId(),label:"",_new:true});renderTE();applyTargets();   // _new: added by Add row and not named yet
+ const r=document.querySelectorAll("#teTable tbody input.nm");r[r.length-1].focus()}   // the ID is filled in, so go straight to the name
+$("#teAdd").onclick=addRow;
 $("#teGen").onclick=()=>{
  const pre=prefixOf(),a=+$("#teFrom").value,b=+$("#teTo").value,lp=$("#teLP").value;
  if(!(a>=0&&b>=a&&b-a<1000)){msg("Check the From and To numbers.");return}
@@ -311,7 +329,13 @@ $("#tePasteBtn").onclick=()=>{
   if(m){v=m[1].trim();lbl=m[2].trim()}else{v=pre+next++;lbl=l}   // a name on its own becomes the next partyline
   const ex=have.get(v);if(ex){ex.label=lbl;updated++}else{const t={value:v,label:lbl};targets.push(t);have.set(v,t);added++}});
  $("#tePaste").value="";renderTE();applyTargets(`Pasted: ${added} added, ${updated} updated.`)};
-$("#teSort").onclick=()=>{targets.sort((a,b)=>a.value.localeCompare(b.value,undefined,{numeric:true}));renderTE();applyTargets("Sorted by ID.")};
+$("#teSave").onclick=()=>{
+ markDupes();
+ if(document.querySelector("#teTable input.dup")){msg("Some IDs are used twice (shown in red). Fix them, then press Save.");return}
+ const before=targets.length;targets=targets.filter(t=>t.value&&!(t._new&&!(t.label||"").trim()));   // empty rows and rows added but never named
+ const dropped=before-targets.length;
+ saveTargets();renderTE();applyTargets(`Saved ${targets.length} targets${dropped?` (${dropped} unfinished row${dropped>1?"s":""} removed)`:""}. They are kept in this browser. Use Download JSON or Copy share link to pass them on.`);
+ setTE(false)};
 $("#teClear").onclick=()=>{if(!confirm("Remove every target from the list?"))return;targets=[];renderTE();applyTargets("List cleared.")};
 $("#teDl").onclick=()=>{
  const j=JSON.stringify({targets:[{value:"",label:""},...targets.filter(t=>t.value)]},null,2),a=document.createElement("a");
@@ -333,11 +357,13 @@ $("#shareBtn").onclick=async()=>{
  try{await navigator.clipboard.writeText(u);msg(`Share link copied (${u.length} characters).`)}
  catch(e){prompt("Copy this link:",u)}
  if(u.length>8000)msg($("#pc").textContent+" It is long, so some chat apps may cut it off.")};
+function hideQR(){$("#qr").hidden=true;$("#qrBtn").textContent="Show QR code";$("#qrBtn").setAttribute("aria-expanded","false")}
 $("#qrBtn").onclick=async()=>{
+ if(!$("#qr").hidden){hideQR();return}
  const u=await shareURL(),c=$("#qr");
  if(typeof QRious==="undefined"){msg("The QR library did not load. Check your connection.");return}
  if(u.length>2400){c.hidden=true;msg("This list is too large for a QR code. Use the share link instead.");return}
- new QRious({element:c,value:u,size:240,level:"L"});c.hidden=false;msg("Scan the code to open the page with these partylines.")};
+ new QRious({element:c,value:u,size:240,level:"L"});c.hidden=false;$("#qrBtn").textContent="Hide QR code";$("#qrBtn").setAttribute("aria-expanded","true");msg("Scan the code to open the page with these partylines.")};
 async function fromHash(){
  if(!location.hash.startsWith("#pl="))return null;
  try{return await decodeTargets(location.hash.slice(4))}catch(e){return false}}

@@ -88,3 +88,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .combo-list li[aria-selected=true],.combo-list li:hover{background:#2a2218}
 .combo-list li.none{color:var(--mute);cursor:default}
 .combo-warn{display:block;margin-top:4px;color:#ffb36b;font-size:13px}
+.combo-wrap{position:relative}
+.combo-wrap input{padding-right:34px}
+.combo-btn{position:absolute;right:1px;top:1px;bottom:1px;width:32px;padding:0;border:0;background:transparent;color:var(--mute);border-radius:0 4px 4px 0;line-height:1}
+.combo-btn:hover{color:var(--ink);background:#20262b}
+input[type=number]{color:var(--ink);background:#101315;border:1px solid var(--line);border-radius:4px;padding:8px 10px}

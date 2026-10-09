@@ -25,14 +25,14 @@
       <label for="pf">Partylines from your matrix (JSON)</label>
       <input type="file" id="pf" accept=".json">
       <p id="pc" role="status"></p>
-      <div class="row"><button type="button" id="shareBtn">Copy share link</button><button type="button" id="qrBtn">Show QR code</button><button type="button" id="teBtn" aria-expanded="false" aria-controls="tedit">Edit list</button></div>
+      <div class="row"><button type="button" id="shareBtn">Copy share link</button><button type="button" id="qrBtn" aria-expanded="false" aria-controls="qr">Show QR code</button><button type="button" id="teBtn" aria-expanded="false" aria-controls="tedit">Edit list</button></div>
       <canvas id="qr" width="240" height="240" hidden aria-label="QR code for the share link"></canvas>
     </div>
   </div>
 
   <section id="tedit" hidden aria-labelledby="teh">
     <h2 id="teh">Partylines and other targets</h2>
-    <p class="hint">Each row is one target: its ID as EHX writes it, and the name to show on the panel. Partylines look like <code>CNF.0.1</code> and groups like <code>GRP.0.1</code>. Changes apply straight away and are kept in this browser. Use <b>Download JSON</b> to keep or share the list as a file.</p>
+    <p class="hint">Each row is one target: its ID as EHX writes it, and the name to show on the panel. Partylines look like <code>CNF.0.1</code> and groups like <code>GRP.0.1</code>. Each new row gets the next ID for you, so just type the name. Changes apply as you type. Press <b>Save</b> when you are done to tidy up and keep the list in this browser. Use <b>Download JSON</b> to keep or share the list as a file.</p>
     <div class="te-tools">
       <div class="te-gen">
         <b>Add a range</b>
@@ -52,7 +52,7 @@
     <div class="te-wrap">
       <table id="teTable"><thead><tr><th>Target ID</th><th>Name</th><th><span class="sr">Remove</span></th></tr></thead><tbody></tbody></table>
     </div>
-    <div class="row"><button type="button" id="teAdd">Add row</button><button type="button" id="teSort">Sort by ID</button><button type="button" id="teDl">Download JSON</button><button type="button" id="teClear">Clear list</button><span id="teCount" class="hint"></span></div>
+    <div class="row"><button type="button" id="teAdd">Add row</button><button type="button" id="teSave" class="go">Save</button><button type="button" id="teDl">Download JSON</button><button type="button" id="teClear">Clear list</button><span id="teCount" class="hint"></span></div>
   </section>
 
   <div class="stage">
