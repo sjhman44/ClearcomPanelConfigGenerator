@@ -67,15 +67,15 @@
 
   <section id="editor" hidden>
     <h2 id="kt"></h2>
+    <p class="hint" id="freeNote" hidden>No partyline list is loaded, so any text is accepted. A list from your matrix (Edit list, or upload a JSON) is recommended: it gives you autocomplete, and its IDs are what actually work in the system.</p>
     <div class="fields">
       <div>
         <label for="tg" id="tgl">Target (partyline, group, or reply)</label>
-        <input id="tg" list="tl" autocomplete="off" placeholder="Pick or type, e.g. CNF.1.15">
-        <datalist id="tl"></datalist>
+        <input id="tg" autocomplete="off" placeholder="Start typing a name">
       </div>
       <div id="fTalk" hidden>
         <label for="tk">Talk target (lever)</label>
-        <input id="tk" list="tl" autocomplete="off" placeholder="Same as listen unless changed">
+        <input id="tk" autocomplete="off" placeholder="Same as listen unless changed">
       </div>
       <div id="fMode">
         <label for="md">Key behaviour</label>

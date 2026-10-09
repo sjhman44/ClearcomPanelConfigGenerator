@@ -42,7 +42,6 @@ function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.set
 const find=v=>[...targets,...SPECIAL].find(t=>t.value===v);
 const labelOf=t=>t?((find(t)||{}).label||t):"";
 const lab=k=>labelOf(k.t);
-const resolve=v=>{v=v.trim();const t=[...targets,...SPECIAL].find(x=>x.value===v||x.label===v);return t?t.value:v};
 const msg=t=>{$("#pc").textContent=t};
 
 /* ---------- beltpack drawings (FSII = 4 channel, FSE = 8 channel) ---------- */
@@ -145,30 +144,86 @@ function drawBP(){
  if(N===4){drawFS2(p);replyKey(305,192,90,26,"#ffe400","#ffe400")}else{drawFSE(p);replyKey(316,226,68,18,"#e8ecee","#8d98a1","#20262c",3,10)}
 }
 
+
+/* ---------- target fields: autocomplete that only accepts entries from the list (free text when there is no list) ---------- */
+const combos=new WeakMap();
+const disp=v=>strict()&&find(v)?(find(v).label||v):v;
+function setCombo(input,v){const c=combos.get(input);c.committed=v||"";input.value=disp(v||"");c.warn()}
+function suggestions(q){
+ q=q.trim().toLowerCase();
+ const all=[...targets.filter(t=>t.value),...SPECIAL];
+ const rank=t=>{const l=(t.label||"").toLowerCase(),v=t.value.toLowerCase();
+  if(!q)return 0;if(l.startsWith(q))return 0;if(v.startsWith(q))return 1;
+  if(l.split(/[\s\-_]+/).some(w=>w.startsWith(q)))return 2;if(l.includes(q)||v.includes(q))return 3;return -1};
+ return all.map(t=>[rank(t),t]).filter(x=>x[0]>=0)
+  .sort((a,b)=>a[0]-b[0]||(a[1].label||a[1].value).localeCompare(b[1].label||b[1].value,undefined,{numeric:true}))
+  .map(x=>x[1]).slice(0,50)}
+function exactMatch(q){q=q.trim().toLowerCase();return q&&[...targets,...SPECIAL].find(t=>t.value&&(t.value.toLowerCase()===q||(t.label||"").toLowerCase()===q))}
+function attachCombo(input,commit){
+ const box=input.parentElement,list=document.createElement("ul"),note=document.createElement("small");
+ list.className="combo-list";list.id=input.id+"-list";list.setAttribute("role","listbox");list.hidden=true;
+ note.className="combo-warn";note.id=input.id+"-warn";note.hidden=true;
+ box.style.position="relative";box.append(list,note);
+ input.setAttribute("role","combobox");input.setAttribute("aria-autocomplete","list");input.setAttribute("aria-expanded","false");
+ input.setAttribute("aria-controls",list.id);input.setAttribute("aria-describedby",note.id);
+ const c={committed:"",items:[],active:-1,
+  warn(){const v=c.committed,bad=strict()&&v&&!find(v);note.hidden=!bad;if(bad)note.textContent=`"${v}" is not in your partyline list, so EHX may not accept it.`}};
+ combos.set(input,c);
+ const close=()=>{list.hidden=true;input.setAttribute("aria-expanded","false");input.removeAttribute("aria-activedescendant");c.active=-1};
+ const mark=()=>{[...list.children].forEach((li,i)=>li.setAttribute("aria-selected",i===c.active));
+  const a=list.children[c.active];if(a){input.setAttribute("aria-activedescendant",a.id);a.scrollIntoView({block:"nearest"})}};
+ const pickItem=t=>{c.committed=t.value;input.value=disp(t.value);close();c.warn();commit(t.value)};
+ const open=()=>{
+  c.items=suggestions(input.value);list.innerHTML="";
+  if(!c.items.length){const li=document.createElement("li");li.className="none";li.textContent="Nothing in your list matches";list.appendChild(li)}
+  c.items.forEach((t,i)=>{const li=document.createElement("li");li.id=`${list.id}-${i}`;li.setAttribute("role","option");
+   const a=document.createElement("span"),b=document.createElement("small");a.textContent=t.label||t.value;b.textContent=t.value;li.append(a,b);
+   li.onmousedown=e=>{e.preventDefault();pickItem(t)};list.appendChild(li)});
+  c.active=c.items.length?0:-1;list.hidden=false;input.setAttribute("aria-expanded","true");mark()};
+ input.addEventListener("input",()=>{
+  if(!strict()){c.committed=input.value.trim();c.warn();commit(c.committed);return}   // no list: any text is accepted
+  if(!input.value.trim()){c.committed="";c.warn();commit("")}                            // clearing the field clears the key
+  open()});
+ input.addEventListener("focus",()=>{if(strict()&&!$("#editor").hidden){input.select()}});
+ input.addEventListener("keydown",e=>{
+  if(!strict())return;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(list.hidden)open();else if(c.items.length){c.active=(c.active+(e.key==="ArrowDown"?1:-1)+c.items.length)%c.items.length;mark()}}
+  else if(e.key==="Enter"){if(!list.hidden&&c.items[c.active]){e.preventDefault();pickItem(c.items[c.active])}}
+  else if(e.key==="Escape"&&!list.hidden){e.stopPropagation();input.value=disp(c.committed);close()}});
+ input.addEventListener("blur",()=>{
+  if(!strict()){close();return}
+  const q=input.value.trim();
+  if(!q){close();return}
+  const ex=exactMatch(q),sg=suggestions(q);
+  if(ex)pickItem(ex);else if(sg.length===1)pickItem(sg[0]);   // one possible match: take it
+  else{input.value=disp(c.committed);close()}                 // anything else is not in the list, so put the old value back
+ });
+}
+
 /* ---------- key editor ---------- */
 const blank=()=>({t:"",a:0,f:0,d:1,c:0,x:{}});
 function pick(i){sel=i;drawBP();syncEd();$("#editor").hidden=false;
  $("#kt").textContent=isRot()?"Page "+(S.vpanel.p+1)+", channel "+(i+1):"Key "+kn(i);$("#tg").focus()}
 function modeIdx(k){return MODES.findIndex(x=>x[1]===k.a&&x[2]===k.f&&x[3]===k.d)}
-function syncRot(){const g=VP();$("#tk").value=g.k[sel]||"";$("#lo").checked=!!g.l[sel]&&!g.k[sel]}
+function syncRot(){const g=VP();setCombo($("#tk"),g.k[sel]||"");$("#lo").checked=!!g.l[sel]&&!g.k[sel]}
 function syncEd(){
  const rot=isRot();
  $("#fMode").hidden=rot;$("#fTalk").hidden=!rot;$("#fLo").hidden=!rot;
  $("#tgl").textContent=rot?"Listen target (rotary knob)":"Target (partyline, group, or reply)";
- if(rot){$("#tg").value=VP().l[sel]||"";syncRot();return}
+ if(rot){setCombo($("#tg"),VP().l[sel]||"");syncRot();return}
  const k=keys[sel]||blank(),m=modeIdx(k);
- $("#tg").value=k.t;
+ setCombo($("#tg"),k.t);
  $("#md").innerHTML=MODES.map((x,i)=>`<option value="${i}">${x[0]}</option>`).join("")+(m<0?'<option value="-1">Imported (custom)</option>':"");
  $("#md").value=m;
 }
-$("#tg").oninput=e=>{
- const val=resolve(e.target.value);
+function commitTg(val){
  if(isRot()){const g=VP(),old=g.l[sel];g.l[sel]=val;if(g.k[sel]===old)g.k[sel]=val;syncRot();refresh();return}   // talk follows listen unless set separately
  const k=keys[sel]||{...blank(),...(val.startsWith("REPLY")?{a:1,f:0,d:0}:{})};
- k.t=val;keys[sel]=val?k:null;refresh();if(keys[sel])$("#md").value=modeIdx(keys[sel])};
-$("#tk").oninput=e=>{VP().k[sel]=resolve(e.target.value);syncRot();refresh()};
+ k.t=val;keys[sel]=val?k:null;refresh();if(keys[sel])$("#md").value=modeIdx(keys[sel])}
+function commitTk(val){VP().k[sel]=val;refresh()}
 $("#lo").onchange=e=>{const g=VP();g.k[sel]=e.target.checked?"":g.l[sel];syncRot();refresh()};
 $("#md").onchange=e=>{const m=MODES[e.target.value];if(m&&keys[sel]){Object.assign(keys[sel],{a:m[1],f:m[2],d:m[3]});refresh()}};
+attachCombo($("#tg"),commitTg);attachCombo($("#tk"),commitTk);
 $("#clr").onclick=()=>{if(isRot()){VP().l[sel]="";VP().k[sel]=""}else keys[sel]=null;syncEd();refresh()};
 
 /* ---------- VPanel page menu (blue Menu button) ---------- */
@@ -197,15 +252,17 @@ function stored(){
  return null}
 async function loadTargets(){
  const s=stored();if(s)return s;
- for(const u of ["data/targets.json","data/targetsDEMO.json"]){
+ for(const u of ["data/targets.json"]){
   try{const r=await fetch(u);if(r.ok){const j=await r.json();return{list:j.targets||j,src:u}}}catch(e){}}
- return{list:Array.from({length:20},(_,i)=>({value:"CNF.0."+(i+1),label:"PL"+(i+1)})),src:null}}
-function fillList(){$("#tl").innerHTML=[...targets,...SPECIAL].filter(t=>t.value).map(t=>`<option value="${attr(t.value)}">${attr(t.label||"")}</option>`).join("")}
+ return{list:[],src:null}}
+/* with a list loaded, panel fields only accept entries from it; with no list they accept any text */
+const strict=()=>targets.some(t=>t.value);
+function listChanged(){if(!$("#editor").hidden)syncEd();$("#freeNote").hidden=strict()}
 function onTargets(src){
  targets=targets.filter(t=>t&&t.value);   // the blank first entry in older JSON files is not a real target
- fillList();refresh();
+ refresh();listChanged();
  if(!$("#tedit").hidden)renderTE();
- msg(src?`${targets.length} targets loaded from ${src}.`:"Using placeholder partylines (PL1 to PL20). Upload yours or use Edit list to make your own.")}
+ msg(src?`${targets.length} targets loaded from ${src}.`:"No partyline list yet, so you can type any target. A list from your matrix is recommended, because its IDs are what actually work in the system: use Edit list, upload a JSON, or open a share link.")}
 $("#pf").onchange=async e=>{
  try{const j=JSON.parse(await e.target.files[0].text()),a=(j.targets||j).filter(t=>t&&typeof t.value==="string");
   if(!a.length)throw 0;targets=a;try{localStorage.setItem(OWN,JSON.stringify(a))}catch(x){}
@@ -217,7 +274,7 @@ $("#pf").onchange=async e=>{
 const prefixOf=()=>{const p=$("#teP").value.trim()||"CNF.0.";return p.endsWith(".")?p:p+"."};
 function saveTargets(){try{localStorage.setItem(OWN,JSON.stringify(targets.filter(t=>t.value)))}catch(e){}}
 function applyTargets(note){
- fillList();saveTargets();refresh();markDupes();
+ saveTargets();refresh();listChanged();markDupes();
  msg(note||`${targets.filter(t=>t.value).length} targets (edited here, saved in this browser).`)}
 function markDupes(){
  const seen={};document.querySelectorAll("#teTable tbody input.id").forEach(i=>{const v=i.value.trim();if(v)seen[v]=(seen[v]||0)+1});
