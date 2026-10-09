@@ -80,3 +80,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
 #teTable input.dup{border-color:#e8505b;background:#2a1517}
 .sr{position:absolute;left:-9999px}
 #tedit .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+
+/* autocomplete for the target fields */
+.combo-list{position:absolute;left:0;right:0;top:100%;z-index:8;margin:2px 0 0;padding:4px;list-style:none;max-height:260px;overflow:auto;background:#161a1d;border:1px solid var(--amber);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.combo-list li{display:flex;justify-content:space-between;gap:12px;padding:6px 10px;border-radius:4px;cursor:pointer}
+.combo-list li small{color:var(--mute);font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.combo-list li[aria-selected=true],.combo-list li:hover{background:#2a2218}
+.combo-list li.none{color:var(--mute);cursor:default}
+.combo-warn{display:block;margin-top:4px;color:#ffb36b;font-size:13px}

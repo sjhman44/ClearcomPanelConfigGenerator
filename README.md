@@ -7,8 +7,7 @@ One page for building key configs for the VPanel (12-channel rack panel), the FS
     index.html            the page
     css/styles.css        styling
     js/app.js             all logic and panel drawings
-    data/targetsDEMO.json      placeholder partylines
-    data/targets.json          optional: your own list, used instead of the demo
+    data/targets.json          optional: your own list, loaded for everyone who opens the page
 
 ## Partylines
 
@@ -19,6 +18,8 @@ Click "Choose File" on the page and upload your matrix partyline JSON, in this s
 It is saved in your browser only. Or put the same file at `data/targets.json`.
 
 You can also build the list on the page: click "Edit list", then add rows, add a range (for example CNF.0.1 to CNF.0.12), or paste a list. Targets are not limited to partylines: use whatever ID EHX writes, such as GRP.0.1 for a group. "Download JSON" saves the list in the shape above.
+
+With a list loaded, the target fields autocomplete from it (type "Car" to see Car6, Car7 and so on) and only accept entries from it. With no list loaded, any text is accepted. A list from your matrix is recommended, because its IDs are what actually work in the system.
 
 ## Run locally
 
