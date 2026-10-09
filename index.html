@@ -1,40 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="styles_index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clear-Com EHX Panel Configurator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Clearcom EHX Beltpack & Panel Configurator</h1>
-    </header>
-    <nav>
-        <div class="button-container">
-            <a id="link1" class="button" href="FSE/FSE.html">FSE Beltpack Configurator</a>
-            <a id="link2" class="button" href="FSII/FSII.html">FSII Beltpack Configurator</a>
-        </div>
-    </nav>
+<header>
+  <h1>Clear-Com EHX Panel Configurator</h1>
+  <p>Choose a panel, assign its keys, and download the config for your matrix.</p>
+</header>
 
-    <div class="main-container">
-        <div id="uploadPLs">
-            <label for="fileUpload">Upload the Partyline Configuration from your Matrix. This will only need to be done once. Values will persist even if you close your web browser. Values will be stored locally and never leave your device.</label>
-            <input type="file" id="fileUpload" accept=".json">
-        </div>
-
-        <div class="qr-container">
-            <canvas id="qrCodeCanvas"></canvas>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-        </div>
-        <div class="button-container">
-            <button id="copyButton">Copy Sharable Link & Create QR Code</button>
-        </div>
-        <div class="clear-button-container">
-            <button onclick="clearStorage()">Clear Saved Partylines</button>
-        </div>
+<main>
+  <div class="top">
+    <div class="picker" role="group" aria-label="Panel">
+      <button type="button" data-panel="vpanel"><b>VPanel</b><span>12-channel rack panel</span></button>
+      <button type="button" data-panel="fsii"><b>FSII beltpack</b><span>4-channel</span></button>
+      <button type="button" data-panel="fse"><b>FSE beltpack</b><span>8-channel</span></button>
     </div>
+    <div class="pl">
+      <label for="pf">Partylines from your matrix (JSON)</label>
+      <input type="file" id="pf" accept=".json">
+      <p id="pc" role="status"></p>
+      <div class="row"><button type="button" id="shareBtn">Copy share link</button><button type="button" id="qrBtn">Show QR code</button><button type="button" id="teBtn" aria-expanded="false" aria-controls="tedit">Edit list</button></div>
+      <canvas id="qr" width="240" height="240" hidden aria-label="QR code for the share link"></canvas>
+    </div>
+  </div>
 
-    <script src="script_index.js"></script>
+  <section id="tedit" hidden aria-labelledby="teh">
+    <h2 id="teh">Partylines and other targets</h2>
+    <p class="hint">Each row is one target: its ID as EHX writes it, and the name to show on the panel. Partylines look like <code>CNF.0.1</code> and groups like <code>GRP.0.1</code>. Changes apply straight away and are kept in this browser. Use <b>Download JSON</b> to keep or share the list as a file.</p>
+    <div class="te-tools">
+      <div class="te-gen">
+        <b>Add a range</b>
+        <label>ID prefix<input id="teP" value="CNF.0."></label>
+        <label>From<input id="teFrom" type="number" min="0" value="1"></label>
+        <label>To<input id="teTo" type="number" min="0" value="12"></label>
+        <label>Name prefix<input id="teLP" value="PL"></label>
+        <button type="button" id="teGen">Add range</button>
+      </div>
+      <details class="te-paste">
+        <summary>Paste a list</summary>
+        <p class="hint">One per line as <code>ID, name</code> (comma or tab). A line with just a name is added as the next partyline, using the ID prefix above.</p>
+        <textarea id="tePaste" rows="6" placeholder="CNF.0.1, Audio&#10;GRP.0.1, All Stage&#10;Director"></textarea>
+        <div class="row"><button type="button" id="tePasteBtn">Add pasted lines</button><label class="chk"><input type="checkbox" id="tePasteRep"> Replace the current list</label></div>
+      </details>
+    </div>
+    <div class="te-wrap">
+      <table id="teTable"><thead><tr><th>Target ID</th><th>Name</th><th><span class="sr">Remove</span></th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="row"><button type="button" id="teAdd">Add row</button><button type="button" id="teSort">Sort by ID</button><button type="button" id="teDl">Download JSON</button><button type="button" id="teClear">Clear list</button><span id="teCount" class="hint"></span></div>
+  </section>
+
+  <div class="stage">
+    <!-- All panels are drawn by the script -->
+    <div id="pageMenu" role="dialog" aria-label="Go to page" hidden>
+      <b>Go to page</b>
+      <div id="pageBtns"></div>
+    </div>
+    <svg id="bp" role="group" aria-label="Beltpack" viewBox="0 0 700 300"></svg>
+  </div>
+  <p class="hint" id="hint"></p>
+
+  <section id="editor" hidden>
+    <h2 id="kt"></h2>
+    <div class="fields">
+      <div>
+        <label for="tg" id="tgl">Target (partyline, group, or reply)</label>
+        <input id="tg" list="tl" autocomplete="off" placeholder="Pick or type, e.g. CNF.1.15">
+        <datalist id="tl"></datalist>
+      </div>
+      <div id="fTalk" hidden>
+        <label for="tk">Talk target (lever)</label>
+        <input id="tk" list="tl" autocomplete="off" placeholder="Same as listen unless changed">
+      </div>
+      <div id="fMode">
+        <label for="md">Key behaviour</label>
+        <select id="md"></select>
+      </div>
+      <div id="fLo" hidden><label class="chk"><input type="checkbox" id="lo"> Listen only (no talk key)</label></div>
+    </div>
+    <button type="button" id="clr">Clear this key</button>
+  </section>
+
+  <section class="actions">
+    <div>
+      <label for="nm" id="nml">Panel ID</label>
+      <input id="nm" autocomplete="off">
+    </div>
+    <div class="btns">
+      <button type="button" class="go" id="dl">Download config</button>
+      <button type="button" id="imb">Import existing config</button>
+      <input type="file" id="im" accept=".ccl,.xml" hidden>
+      <button type="button" id="rs">Reset</button>
+    </div>
+  </section>
+
+  <details>
+    <summary>Advanced</summary>
+    <div class="fields">
+      <div><label for="ty">Panel type</label><input id="ty"></div>
+      <div><label for="cfg">Matrix configuration name</label><input id="cfg"></div>
+    </div>
+    <h3>Combined export (several panels in one file)</h3>
+    <p class="hint">Experimental. Most users should use <b>Download config</b> above. Each panel keeps its own panel type, so every block can only be applied to a matching panel. Only panels with assigned keys can be included.</p>
+    <div id="combo"></div>
+    <button type="button" id="dlAll" disabled>Download combined file</button>
+    <h3>Config preview</h3>
+    <pre id="pv"></pre>
+  </details>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
